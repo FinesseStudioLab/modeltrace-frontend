@@ -290,3 +290,5 @@ a { color: inherit; text-decoration: none; }
   background: color-mix(in srgb, var(--surface) 65%, transparent);
   letter-spacing: 0.04em;
 }
+
+// patch: 2026-06-14T14:34:17.142862

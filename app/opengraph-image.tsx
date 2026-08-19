@@ -87,5 +87,3 @@ export default function Image() {
     }
   );
 }
-
-// patch: 2026-06-08T19:42:51.428575

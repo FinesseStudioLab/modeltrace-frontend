@@ -1,3 +1,5 @@
+import { publicRoutes } from "@/lib/site-map";
+
 export function ExpectedPages() {
   return (
     <section className="section site-map" id="site-map">
@@ -17,14 +19,13 @@ export function ExpectedPages() {
             </tr>
           </thead>
           <tbody>
-            <tr key="/"><td><code>/</code></td><td>Marketing hub + site map</td><td>Scaffold</td></tr>
-            <tr key="/product"><td><code>/product</code></td><td>Personas, pricing hooks, integration story</td><td>Planned</td></tr>
-            <tr key="/contracts"><td><code>/contracts</code></td><td>Soroban modules and interaction flows</td><td>Planned</td></tr>
-            <tr key="/operators"><td><code>/operators</code></td><td>Dashboard preview for AI gateways</td><td>Planned</td></tr>
-            <tr key="/compliance"><td><code>/compliance</code></td><td>Audit exports and policy packs</td><td>Planned</td></tr>
-            <tr key="/roadmap"><td><code>/roadmap</code></td><td>Milestones vs grants</td><td>Scaffold</td></tr>
-            <tr key="/contributors"><td><code>/contributors</code></td><td>Good first issues and guild roles</td><td>Planned</td></tr>
-            <tr key="/docs"><td><code>/docs</code></td><td>Technical reference hub</td><td>Scaffold</td></tr>
+            {publicRoutes.map(({ path, purpose, status }) => (
+              <tr key={path}>
+                <td><code>{path}</code></td>
+                <td>{purpose}</td>
+                <td>{status}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

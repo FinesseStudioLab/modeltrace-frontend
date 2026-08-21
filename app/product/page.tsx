@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+import { getRouteDescription } from "@/lib/site-map";
+
+export const metadata: Metadata = {
+  description: getRouteDescription("/product"),
+};
+
 export default function Page() {
   return (
     <section className="section">

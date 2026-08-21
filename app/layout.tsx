@@ -1,26 +1,31 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { getSiteUrl, isPreviewDeployment, SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
+import { getStructuredData, serializeJsonLd } from "@/lib/structured-data";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("http://localhost:3000"),
+  metadataBase: getSiteUrl(),
   title: {
-    default: "ModelTrace",
-    template: "%s | " + "ModelTrace",
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: "Verifiable AI inference accounting on Stellar.",
-  applicationName: "ModelTrace",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  robots: isPreviewDeployment()
+    ? { index: false, follow: false }
+    : { index: true, follow: true },
   openGraph: {
-    title: "ModelTrace",
-    description: "Verifiable AI inference accounting on Stellar.",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ModelTrace",
-    description: "Verifiable AI inference accounting on Stellar.",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
   },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
@@ -39,9 +44,15 @@ const nav = [
 ] as const;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const structuredData = getStructuredData();
+
   return (
     <html lang="en">
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData) }}
+        />
         <header className="nav">
           <div className="container nav-inner">
             <Link href="/" className="brand brand-with-logo">

@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
 import { ExpectedPages } from "@/components/expected-pages";
+import { getRouteDescription } from "@/lib/site-map";
+
+export const metadata: Metadata = {
+  description: getRouteDescription("/"),
+};
 
 export default function HomePage() {
   return (

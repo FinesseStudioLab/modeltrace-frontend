@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:seo": "tsc -p tsconfig.test.json && node --test .test-dist/tests/seo.test.js"
   },
   "dependencies": {
     "next": "^15.1.3",

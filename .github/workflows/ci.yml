@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Lint, typecheck, build
+    name: Lint, typecheck, build, unit tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,5 +27,44 @@ jobs:
       - name: Typecheck
         run: npx tsc --noEmit
 
+      - name: Unit tests
+        run: npm test
+
       - name: Build
         run: npm run build
+
+  e2e:
+    name: End-to-end and accessibility
+    runs-on: ubuntu-latest
+    # Split from the job above so a browser-install failure or a flaky
+    # navigation is legible as an E2E problem rather than turning the whole
+    # pipeline red for an unrelated-looking reason.
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium webkit
+
+      # playwright.config.ts starts `npm run build && npm run start`, so the
+      # suite runs against a production build rather than the dev server —
+      # different hydration timing, no minification, and its own error
+      # overlay make a dev-server-green suite say very little about what ships.
+      - name: Run end-to-end and accessibility suite
+        run: npm run test:e2e
+        env:
+          CI: "true"
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

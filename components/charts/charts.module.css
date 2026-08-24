@@ -1,0 +1,154 @@
+/* Chart surface tokens, defined once against the app's existing palette so a
+   theme change moves the charts with it. Charts are Server Components with no
+   client JavaScript, so every interactive affordance here is CSS or native SVG. */
+.frame {
+  --chart-surface: var(--surface, #0f1727);
+  --chart-ink: var(--text, #eaf2ff);
+  --chart-ink-muted: var(--muted, #9bb1d3);
+  --chart-grid: color-mix(in srgb, var(--chart-ink-muted) 22%, transparent);
+  --chart-axis: color-mix(in srgb, var(--chart-ink-muted) 42%, transparent);
+
+  background: var(--chart-surface);
+  border: 1px solid color-mix(in srgb, var(--accent, #59c2ff) 22%, transparent);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* A grid/flex item defaults to min-width:auto, which means it refuses to
+     shrink below its content and pushes the page wider instead. Without this
+     the scroll containers below have no effect and a wide chart overflows the
+     document rather than its own box. */
+  min-width: 0;
+}
+
+.header { display: flex; flex-direction: column; gap: 4px; }
+.title { margin: 0; font-size: 1rem; font-weight: 650; color: var(--chart-ink); }
+.summary { margin: 0; font-size: 0.86rem; color: var(--chart-ink-muted); line-height: 1.5; }
+
+/* Wide charts scroll inside their own box; the page never scrolls sideways. */
+.plot { overflow-x: auto; min-width: 0; }
+.plot svg { display: block; max-width: 100%; height: auto; }
+
+/* A plot with an axis has a legibility floor. Scaling an 8-week time series
+   down to a 340px phone shrinks the tick labels to noise, so below the floor
+   the plot scrolls at native size instead of shrinking — the page itself
+   still never scrolls sideways, because the overflow is owned by this box. */
+.plotWide svg { min-width: 520px; max-width: none; }
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--chart-ink-muted);
+}
+.legendItem { display: flex; align-items: center; gap: 7px; }
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  /* A 1px ring keeps adjacent swatches separated on the surface. */
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--chart-surface) 90%, transparent);
+}
+
+/* The data table is not a fallback. For a compliance product an auditor wants
+   the numbers, and having them satisfies the text-alternative requirement at
+   the same time — so it ships open, collapsed only to save vertical space. */
+.tableWrap { overflow-x: auto; min-width: 0; }
+.details > summary {
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--chart-ink-muted);
+  padding: 4px 0;
+  list-style: revert;
+}
+.details > summary:focus-visible {
+  outline: 2px solid var(--accent, #59c2ff);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.table { width: 100%; border-collapse: collapse; font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+.table th, .table td {
+  text-align: right;
+  padding: 6px 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--chart-ink-muted) 20%, transparent);
+  white-space: nowrap;
+}
+.table th:first-child, .table td:first-child { text-align: left; }
+.table thead th { color: var(--chart-ink-muted); font-weight: 600; }
+.tableSwatch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  margin-right: 7px;
+  vertical-align: baseline;
+}
+
+/* Empty, loading, and error share one box so the three states are visibly the
+   same component rather than three different-shaped surprises. */
+.state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  border-radius: 10px;
+  border: 1px dashed color-mix(in srgb, var(--chart-ink-muted) 30%, transparent);
+  color: var(--chart-ink-muted);
+  font-size: 0.86rem;
+  text-align: center;
+  padding: 16px;
+}
+.stateError {
+  border-style: solid;
+  border-color: color-mix(in srgb, #e06c5f 45%, transparent);
+  color: #e06c5f;
+}
+
+.skeleton {
+  width: 100%;
+  height: 140px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--chart-ink-muted) 10%, transparent) 25%,
+    color-mix(in srgb, var(--chart-ink-muted) 20%, transparent) 37%,
+    color-mix(in srgb, var(--chart-ink-muted) 10%, transparent) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}
+
+/* Native SVG <title> gives a tooltip with zero client JavaScript. The CSS
+   hover only lifts the mark so the pointer has visible feedback while the
+   browser's own tooltip appears. */
+.mark { transition: opacity 0.12s ease; }
+.plot:hover .mark { opacity: 0.55; }
+.plot .mark:hover { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .mark { transition: none; }
+}
+
+/* Forced-colours mode drops author colours entirely, which is exactly the
+   case the dash patterns and hatches exist for. */
+@media (forced-colors: active) {
+  .plot:hover .mark, .plot .mark:hover { opacity: 1; }
+  .swatch, .tableSwatch { forced-color-adjust: none; }
+}
+
+.gaugeValue { font-size: 1.6rem; font-weight: 700; fill: var(--chart-ink); font-variant-numeric: tabular-nums; }
+.gaugeCaption { font-size: 0.78rem; fill: var(--chart-ink-muted); }
+.axisText { font-size: 10px; fill: var(--chart-ink-muted); font-variant-numeric: tabular-nums; }
+.directLabel { font-size: 11px; font-weight: 600; fill: var(--chart-ink); }

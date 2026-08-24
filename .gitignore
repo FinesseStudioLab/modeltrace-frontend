@@ -7,3 +7,9 @@ out/
 *.log
 .DS_Store
 *.tsbuildinfo
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

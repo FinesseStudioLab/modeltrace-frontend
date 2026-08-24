@@ -1,11 +1,15 @@
+import { Badge, EmptyState } from "@/components/ui";
+
 export default function Page() {
   return (
     <section className="section">
-      <span className="tag">Contracts</span>
-      <h2>Contracts surface â€” product definition TBD.</h2>
-      <p style={{ color: "var(--muted)" }}>
-        Scaffold page â€” replace with production content, data loaders, and analytics.
-      </p>
+      <Badge>Contracts</Badge>
+      <h2>Contracts surface — product definition TBD.</h2>
+      <EmptyState 
+        title="Under Construction" 
+        description="Scaffold page — replace with production content, data loaders, and analytics." 
+      />
     </section>
   );
 }
+

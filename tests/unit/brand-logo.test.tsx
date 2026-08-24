@@ -19,3 +19,4 @@ describe("BrandLogo", () => {
     expect(container.querySelector("svg")).toHaveClass("nav-logo");
   });
 });
+

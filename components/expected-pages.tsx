@@ -1,33 +1,68 @@
+import { Badge, Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "./ui";
+
 export function ExpectedPages() {
   return (
     <section className="section site-map" id="site-map">
-      <span className="tag">Site map</span>
-      <h2>Expected pages (delivery backlog)</h2>
-      <p style={{ color: "var(--muted)", maxWidth: 720 }}>
+      <Badge>Site map</Badge>
+      <h2 className="mt-12">Expected pages (delivery backlog)</h2>
+      <p className="text-muted-max-62">
         This table is the contract between product and engineering. Routes marked scaffold ship as
         placeholders; planned routes are tracked for sprint planning.
       </p>
-      <div style={{ overflowX: "auto", marginTop: 16 }}>
-        <table>
-          <thead>
-            <tr>
-              <th>Route</th>
-              <th>Purpose</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr key="/"><td><code>/</code></td><td>Marketing hub + site map</td><td>Scaffold</td></tr>
-            <tr key="/product"><td><code>/product</code></td><td>Personas, pricing hooks, integration story</td><td>Planned</td></tr>
-            <tr key="/contracts"><td><code>/contracts</code></td><td>Soroban modules and interaction flows</td><td>Planned</td></tr>
-            <tr key="/operators"><td><code>/operators</code></td><td>Dashboard preview for AI gateways</td><td>Planned</td></tr>
-            <tr key="/compliance"><td><code>/compliance</code></td><td>Audit exports and policy packs</td><td>Planned</td></tr>
-            <tr key="/roadmap"><td><code>/roadmap</code></td><td>Milestones vs grants</td><td>Scaffold</td></tr>
-            <tr key="/contributors"><td><code>/contributors</code></td><td>Good first issues and guild roles</td><td>Planned</td></tr>
-            <tr key="/docs"><td><code>/docs</code></td><td>Technical reference hub</td><td>Scaffold</td></tr>
-          </tbody>
-        </table>
+      <div className="mt-16">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Route</TableHead>
+              <TableHead>Purpose</TableHead>
+              <TableHead>Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow key="/">
+              <TableCell><code>/</code></TableCell>
+              <TableCell>Marketing hub + site map</TableCell>
+              <TableCell><Badge variant="neutral">Scaffold</Badge></TableCell>
+            </TableRow>
+            <TableRow key="/product">
+              <TableCell><code>/product</code></TableCell>
+              <TableCell>Personas, pricing hooks, integration story</TableCell>
+              <TableCell><Badge variant="success">Planned</Badge></TableCell>
+            </TableRow>
+            <TableRow key="/contracts">
+              <TableCell><code>/contracts</code></TableCell>
+              <TableCell>Soroban modules and interaction flows</TableCell>
+              <TableCell><Badge variant="success">Planned</Badge></TableCell>
+            </TableRow>
+            <TableRow key="/operators">
+              <TableCell><code>/operators</code></TableCell>
+              <TableCell>Dashboard preview for AI gateways</TableCell>
+              <TableCell><Badge variant="success">Planned</Badge></TableCell>
+            </TableRow>
+            <TableRow key="/compliance">
+              <TableCell><code>/compliance</code></TableCell>
+              <TableCell>Audit exports and policy packs</TableCell>
+              <TableCell><Badge variant="success">Planned</Badge></TableCell>
+            </TableRow>
+            <TableRow key="/roadmap">
+              <TableCell><code>/roadmap</code></TableCell>
+              <TableCell>Milestones vs grants</TableCell>
+              <TableCell><Badge variant="neutral">Scaffold</Badge></TableCell>
+            </TableRow>
+            <TableRow key="/contributors">
+              <TableCell><code>/contributors</code></TableCell>
+              <TableCell>Good first issues and guild roles</TableCell>
+              <TableCell><Badge variant="success">Planned</Badge></TableCell>
+            </TableRow>
+            <TableRow key="/docs">
+              <TableCell><code>/docs</code></TableCell>
+              <TableCell>Technical reference hub</TableCell>
+              <TableCell><Badge variant="neutral">Scaffold</Badge></TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </div>
     </section>
   );
 }
+

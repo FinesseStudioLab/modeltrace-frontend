@@ -290,3 +290,230 @@ a { color: inherit; text-decoration: none; }
   background: color-mix(in srgb, var(--surface) 65%, transparent);
   letter-spacing: 0.04em;
 }
+
+/* === contracts page === */
+.contracts-lead {
+  color: var(--muted);
+  max-width: 720px;
+  font-size: 1.02rem;
+  margin: 0 0 26px;
+}
+
+.contracts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  padding: 8px 0 6px;
+}
+
+.contract-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contract-role {
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border: 1px solid var(--ring);
+  color: color-mix(in srgb, var(--accent) 85%, white);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.contract-rationale { font-size: 0.86rem; }
+.contract-source { color: var(--accent); font-size: 0.88rem; margin-top: auto; }
+
+.contracts-separation {
+  border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  padding: 12px 16px;
+  margin: 20px 0 4px;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.contracts-block { margin-top: 40px; }
+.contracts-block h3 { margin: 0 0 6px; font-size: 1.25rem; }
+.contracts-sub { color: var(--muted); max-width: 720px; margin: 0 0 16px; font-size: 0.93rem; }
+
+/* Deployment registry table */
+.deploy-network { margin-bottom: 22px; }
+.deploy-network-title { margin: 0 0 6px; font-size: 0.95rem; }
+
+.deploy-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.deploy-grid th, .deploy-grid td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  vertical-align: top;
+}
+.deploy-grid th { color: var(--muted); font-weight: 600; white-space: nowrap; }
+
+.deploy-contract { display: block; font-weight: 650; }
+.deploy-role {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.deploy-address { color: var(--accent); word-break: break-all; }
+.deploy-address:hover { text-decoration: underline; }
+.deploy-hash { font-size: 0.78rem; word-break: break-all; }
+.deploy-pending { color: var(--muted); font-size: 0.82rem; font-style: italic; }
+
+.deploy-notice {
+  border: 1px dashed color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.deploy-notice strong { color: var(--text); }
+.deploy-notice a { color: var(--accent); }
+
+/* Verification steps and code blocks */
+.contracts-steps {
+  padding-left: 20px;
+  color: var(--muted);
+}
+.contracts-steps li { margin-bottom: 16px; }
+.contracts-steps strong, .contracts-steps code { color: var(--text); }
+
+.contracts-code {
+  background: color-mix(in srgb, var(--bg) 60%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--muted) 20%, transparent);
+  border-radius: 10px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  margin: 10px 0 2px;
+}
+
+.contracts-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.contracts-links .cta-secondary { margin-top: 0; }
+
+/* Flow diagram. Colours are the app's own tokens (or color-mix of them) plus
+   one amber for settlement, so the diagram follows the active theme — dark
+   today, and a future light theme without edits. */
+.flow {
+  --flow-attest: var(--accent, #59c2ff);
+  --flow-meter: var(--accent-2, #7cf9c4);
+  --flow-settle: #e8b36a;
+  margin: 16px 0 0;
+}
+
+.flow-canvas {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  padding: 12px 6px 40px;
+}
+
+.flow-node {
+  --flow-accent: var(--flow-attest);
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 14px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--flow-accent) 45%, transparent);
+  border-top: 3px solid var(--flow-accent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface) 92%, var(--bg)) 0%,
+    var(--surface) 100%
+  );
+}
+.flow-node-meter { --flow-accent: var(--flow-meter); }
+.flow-node-settle { --flow-accent: var(--flow-settle); }
+
+.flow-stage {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--flow-accent);
+}
+.flow-name { font-weight: 700; font-size: 0.95rem; }
+.flow-note { font-size: 0.78rem; color: var(--muted); }
+
+.flow-arrow {
+  align-self: center;
+  color: var(--muted);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.flow-loop {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 8px;
+  border-top: 1px dashed color-mix(in srgb, var(--muted) 60%, transparent);
+  text-align: center;
+}
+.flow-loop span {
+  position: relative;
+  top: -0.7em;
+  background: var(--bg);
+  padding: 0 10px;
+  font-size: 0.74rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+.flow-loop::before {
+  content: "▲";
+  position: absolute;
+  left: 0;
+  top: -0.6em;
+  font-size: 0.68rem;
+  color: var(--flow-settle);
+}
+.flow-loop::after {
+  content: "▼";
+  position: absolute;
+  right: 0;
+  top: -0.6em;
+  font-size: 0.68rem;
+  color: var(--flow-settle);
+}
+
+.flow-caption {
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin: 4px 0 14px;
+}
+
+.flow-steps {
+  padding-left: 20px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.flow-steps li { margin-bottom: 10px; }
+.flow-steps strong { color: var(--text); }
+
+@media (max-width: 640px) {
+  .flow-canvas { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); align-self: center; }
+  .flow-loop { display: none; }
+}

@@ -34,7 +34,6 @@ const nav = [
   ["Operators", "/operators"],
   ["Compliance", "/compliance"],
   ["Roadmap", "/roadmap"],
-  ["Changelog", "/changelog"],
   ["Contributors", "/contributors"],
   ["Docs", "/docs"],
 ] as const;

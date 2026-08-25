@@ -1,19 +1,26 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { resolveSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
+const siteUrl = resolveSiteUrl();
+
 export const metadata: Metadata = {
-  metadataBase: new URL("http://localhost:3000"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "ModelTrace",
     template: "%s | " + "ModelTrace",
   },
   description: "Verifiable AI inference accounting on Stellar.",
   applicationName: "ModelTrace",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "ModelTrace",
     description: "Verifiable AI inference accounting on Stellar.",
+    url: "/",
     type: "website",
     locale: "en_US",
   },

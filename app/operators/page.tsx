@@ -37,43 +37,36 @@ const tiles = [
   { label: "Settlement latency (p95)", value: "6.4s", trend: [9.1, 8.7, 8.2, 7.6, 7.4, 6.9, 6.6, 6.4], tone: "good" as const },
 ];
 
+import { Badge, Card, Stat } from "../../components/ui";
+
 export default function Page() {
   return (
     <section className="section">
-      <span className="tag">Operators</span>
-      <h2>Operator dashboard</h2>
-      <p style={{ color: "var(--muted)", maxWidth: "62ch" }}>
+      <Badge>Operators</Badge>
+      <h2 className="mt-12">Operator dashboard</h2>
+      <p className="text-muted-max-62">
         Attestation volume, usage by model, and quota headroom. Every chart on
         this page ships its numbers as a table — an auditor asking for the
         underlying figures should not have to ask anyone.
       </p>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: 16,
-          padding: "18px 0 8px",
-        }}
-      >
+      <div className="grid-cols-auto">
         {tiles.map((tile) => (
-          <div className="card" key={tile.label}>
-            <p style={{ color: "var(--muted)", fontSize: "0.82rem", margin: "0 0 6px" }}>
-              {tile.label}
-            </p>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-              <strong style={{ fontSize: "1.7rem", letterSpacing: "-0.02em" }}>{tile.value}</strong>
+          <Card key={tile.label}>
+            <Stat label={tile.label} value={tile.value} />
+            <div className="flex-between mt-8">
+              <span className="text-muted text-sm">Trend</span>
               <Sparkline
                 values={tile.trend}
                 label={`${tile.label} trend over 8 weeks`}
                 tone={tile.tone}
               />
             </div>
-          </div>
+          </Card>
         ))}
       </div>
 
-      <div style={{ display: "grid", gap: 16, padding: "8px 0 40px" }}>
+      <div className="grid-gap-16">
         <TimeSeries
           title="Attestation volume"
           summary="Accepted attestations rose from 412 to 690 per week over eight weeks, while disputes stayed flat between 15 and 31."
@@ -90,7 +83,7 @@ export default function Page() {
           unit="k tokens"
         />
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
+        <div className="grid-cols-auto-lg">
           <QuotaGauge
             title="Attestation quota"
             summary="690 of 800 weekly attestations used — 86%, past the 80% warning threshold."
@@ -110,3 +103,4 @@ export default function Page() {
     </section>
   );
 }
+

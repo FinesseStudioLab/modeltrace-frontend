@@ -27,3 +27,4 @@ export function BrandLogo({ className }: { className?: string }) {
     </svg>
   );
 }
+

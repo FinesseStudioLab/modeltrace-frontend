@@ -1,0 +1,200 @@
+/* UI Primitives */
+
+/* --- Card --- */
+.card {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 88%, var(--bg)) 0%, var(--surface) 100%);
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardInteractive {
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.cardInteractive:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  transform: translateY(-2px);
+}
+
+/* --- Badge --- */
+.badge { margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 1px solid transparent;
+  width: fit-content;
+}
+
+.badgeDefault {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: var(--ring);
+  color: color-mix(in srgb, var(--accent) 85%, var(--text));
+}
+
+.badgeSuccess {
+  background: color-mix(in srgb, var(--accent-2) 14%, transparent);
+  border-color: color-mix(in srgb, var(--accent-2) 35%, transparent);
+  color: color-mix(in srgb, var(--accent-2) 85%, var(--text));
+}
+
+.badgeWarning {
+  background: color-mix(in srgb, #f59e0b 14%, transparent);
+  border-color: color-mix(in srgb, #f59e0b 35%, transparent);
+  color: #f59e0b;
+}
+
+.badgeDanger {
+  background: color-mix(in srgb, #ef4444 14%, transparent);
+  border-color: color-mix(in srgb, #ef4444 35%, transparent);
+  color: #ef4444;
+}
+
+.badgeNeutral {
+  background: color-mix(in srgb, var(--muted) 14%, transparent);
+  border-color: color-mix(in srgb, var(--muted) 35%, transparent);
+  color: var(--muted);
+}
+
+/* --- Button --- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  line-height: 1.4;
+  text-decoration: none;
+}
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #061018; /* Ensure dark text on light/gradient bg */
+}
+.btnPrimary:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.btnSecondary {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent);
+}
+.btnSecondary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 65%, transparent);
+}
+
+.btnGhost {
+  background: transparent;
+  color: var(--text);
+}
+.btnGhost:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--muted) 15%, transparent);
+}
+
+.btnSm { padding: 6px 12px; font-size: 0.85rem; }
+.btnMd { padding: 9px 16px; font-size: 0.92rem; }
+.btnLg { padding: 12px 24px; font-size: 1rem; }
+
+/* --- Table --- */
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.table th, .table td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+}
+.table th {
+  color: var(--muted);
+  font-weight: 600;
+}
+.tableRow:hover td {
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+}
+
+/* --- Stat --- */
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+.statLabel {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: 0 0 4px;
+}
+.statValue {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+/* --- EmptyState --- */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  border: 1px dashed color-mix(in srgb, var(--muted) 40%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 40%, transparent);
+}
+.emptyStateIcon {
+  font-size: 2rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+  opacity: 0.8;
+}
+.emptyStateTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+.emptyStateDescription {
+  color: var(--muted);
+  font-size: 0.95rem;
+  max-width: 400px;
+  margin: 0;
+}
+
+/* --- Skeleton --- */
+.skeleton {
+  background: color-mix(in srgb, var(--muted) 20%, transparent);
+  border-radius: 6px;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

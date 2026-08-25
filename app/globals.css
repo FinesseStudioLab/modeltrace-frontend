@@ -1,4 +1,5 @@
 :root {
+  /* Dark mode (default for now) */
   --bg: #070b14;
   --surface: #0f1727;
   --text: #eaf2ff;
@@ -6,6 +7,18 @@
   --accent: #59c2ff;
   --accent-2: #7cf9c4;
   --ring: color-mix(in srgb, #59c2ff 35%, transparent);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --accent: #0284c7;
+    --accent-2: #10b981;
+    --ring: color-mix(in srgb, var(--accent) 35%, transparent);
+  }
 }
 
 * { box-sizing: border-box; }
@@ -290,3 +303,22 @@ a { color: inherit; text-decoration: none; }
   background: color-mix(in srgb, var(--surface) 65%, transparent);
   letter-spacing: 0.04em;
 }
+
+.grid-cols-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; padding: 18px 0 8px; }
+.grid-cols-auto-lg { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.grid-gap-16 { display: grid; gap: 16px; padding: 8px 0 40px; }
+.text-muted-max-62 { color: var(--muted); max-width: 62ch; margin-bottom: 24px; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+
+.mb-16 { margin-bottom: 16px; }
+
+
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+
+
+.mt-8 { margin-top: 8px; }
+.text-muted { color: var(--muted); }
+.text-sm { font-size: 0.85rem; }
+

@@ -76,7 +76,7 @@ export function ChartFrame({
             className={wide ? `${styles.plot} ${styles.plotWide}` : styles.plot}
             role="img"
             aria-label={summary}
-            tabIndex={0}
+            tabIndex={wide ? 0 : undefined}
           >
             {children}
           </div>

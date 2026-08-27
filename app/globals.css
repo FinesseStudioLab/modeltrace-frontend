@@ -160,7 +160,7 @@ a { color: inherit; text-decoration: none; }
   padding: 24px 0 40px;
 }
 
-.section h2 { margin-bottom: 10px; }
+.section h1, .section h2 { margin-bottom: 10px; }
 
 .list {
   padding-left: 18px;

@@ -55,6 +55,120 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.92rem;
 }
 
+/* Current-route indicator — visible on both desktop and mobile. */
+.nav-link-current {
+  color: var(--accent);
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-link-current::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+/* Mobile toggle button — hidden on desktop, shown below breakpoint. */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 8px 6px;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.nav-toggle-bar {
+  display: block;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--text);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Mobile disclosure panel — shown only when open, below breakpoint. */
+.nav-mobile-panel {
+  display: none;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  background: color-mix(in srgb, var(--surface) 95%, var(--bg));
+  padding: 8px 0 14px;
+}
+
+.nav-mobile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-mobile-link {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.nav-mobile-link:hover,
+.nav-mobile-link:focus-visible {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--text);
+  outline: none;
+}
+
+.nav-mobile-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* Mobile styles — apply below 768px. */
+@media (max-width: 767px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .links {
+    display: none;
+  }
+
+  .nav-mobile-panel {
+    display: block;
+  }
+}
+
 .hero {
   padding: 56px 0 28px;
 }

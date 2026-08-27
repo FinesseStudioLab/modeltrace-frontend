@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { resolveSiteUrl } from "@/lib/site-url";
@@ -6,6 +7,13 @@ import { getMessages, LOCALE_META, resolveLocale } from "@/lib/i18n";
 import "./globals.css";
 
 const siteUrl = resolveSiteUrl();
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-sans",
+  fallback: ["ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -53,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang={locale} dir={dir}>
-      <body>
+      <body className={inter.variable}>
         <header className="nav">
           <div className="container nav-inner">
             <Link href="/" className="brand brand-with-logo">

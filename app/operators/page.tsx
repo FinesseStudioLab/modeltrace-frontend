@@ -6,6 +6,7 @@ import UsagePanel from "./components/UsagePanel";
 import QuotasPanel from "./components/QuotasPanel";
 import AttestationsPanel from "./components/AttestationsPanel";
 import SettlementsPanel from "./components/SettlementsPanel";
+import { getMessages } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Operators",
@@ -13,12 +14,15 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
+  const m = getMessages();
+  const op = m.operatorsPage;
+
   return (
     <section className="section">
-      <span className="tag">Operators</span>
-      <h2>Operator dashboard</h2>
+      <span className="tag">{op.tag}</span>
+      <h2>{op.heading}</h2>
       <p style={{ color: "var(--muted)", maxWidth: "62ch", marginBottom: 24 }}>
-        Attestation volume, usage by model, and quota headroom. Data is sourced directly from the testnet settlement layer.
+        {op.lead}
       </p>
 
       {/* Top summary row: Settlements and Quotas */}

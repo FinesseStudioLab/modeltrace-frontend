@@ -1,11 +1,14 @@
+import { getMessages } from "@/lib/i18n";
+
 export default function Page() {
+  const m = getMessages();
+  const sp = m.scaffoldPages;
+
   return (
     <section className="section">
-      <span className="tag">Contracts</span>
-      <h2>Contracts surface — product definition TBD.</h2>
-      <p style={{ color: "var(--muted)" }}>
-        Scaffold page — replace with production content, data loaders, and analytics.
-      </p>
+      <span className="tag">{sp.contractsTag}</span>
+      <h2>{sp.contractsHeading}</h2>
+      <p style={{ color: "var(--muted)" }}>{sp.scaffoldNotice}</p>
     </section>
   );
 }

@@ -1,41 +1,42 @@
 import type { Metadata } from "next";
+import { getMessages } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-  title: "Compliance",
-  description: "Verifiable lineage, GDPR-compliant data residency, and deterministic evidence.",
-};
+export function generateMetadata(): Metadata {
+  const m = getMessages();
+  return {
+    title: m.compliancePage.metaTitle,
+    description: m.compliancePage.metaDescription,
+  };
+}
 
 export default function CompliancePage() {
+  const m = getMessages();
+  const cp = m.compliancePage;
+
   return (
     <>
       <section className="landing-hero" style={{ paddingBottom: "24px" }}>
         <div className="landing-hero-inner" style={{ maxWidth: "800px" }}>
-          <span className="tag">Compliance</span>
-          <h1 className="hero-headline">Cryptographic Audit Trails for AI</h1>
-          <p className="landing-lead">
-            Verifiable lineage, GDPR-compliant data residency, and deterministic evidence for enterprise AI consumption.
-          </p>
+          <span className="tag">{cp.tag}</span>
+          <h1 className="hero-headline">{cp.heroHeadline}</h1>
+          <p className="landing-lead">{cp.heroLead}</p>
         </div>
       </section>
 
       <section className="section" style={{ paddingTop: "12px" }}>
-        <h2 style={{ marginBottom: "24px" }}>The Evidence Model</h2>
+        <h2 style={{ marginBottom: "24px" }}>{cp.evidenceHeading}</h2>
         <div className="card" style={{ marginBottom: "32px" }}>
-          <p style={{ margin: 0 }}>
-            ModelTrace operates on a principle of detached cryptographic attestation. We <strong>do not</strong> store raw inference data, prompt contents, or model outputs on the ledger. 
-            Instead, the protocol produces immutable, time-stamped <strong>cryptographic receipts</strong> (SHA-256 hashes) representing the exact payload transmitted by the AI gateway. 
-            Every billed token is deterministically linked to a Stellar transaction hash, providing auditors with a tamper-evident paper trail that outlives vendor relationships.
-          </p>
+          <p style={{ margin: 0 }}>{cp.evidenceBody}</p>
         </div>
 
-        <h2 style={{ marginBottom: "16px" }}>Sample Audit Export</h2>
+        <h2 style={{ marginBottom: "16px" }}>{cp.sampleHeading}</h2>
         <p style={{ color: "var(--muted)", maxWidth: "70ch", marginBottom: "24px" }}>
-          What a compliance officer actually sees. Download a sample export below to review the schema and artifact format natively used by ModelTrace.
+          {cp.sampleLead}
         </p>
         <div className="card" style={{ marginBottom: "32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
           <div>
-            <h4 style={{ margin: "0 0 4px" }}>modeltrace-audit-sample.csv</h4>
-            <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--muted)" }}>Contains timestamp, payer ID, model version, tokens, payload hash, and the txHash.</p>
+            <h4 style={{ margin: "0 0 4px" }}>{cp.sampleFileName}</h4>
+            <p style={{ margin: 0, fontSize: "0.9rem", color: "var(--muted)" }}>{cp.sampleFileDesc}</p>
           </div>
           <a
             href="/modeltrace-audit-sample.csv"
@@ -51,50 +52,34 @@ export default function CompliancePage() {
               fontWeight: 500,
             }}
           >
-            Download CSV
+            {cp.sampleDownload}
           </a>
         </div>
 
-        <h2 style={{ marginBottom: "16px" }}>Independent Verification</h2>
+        <h2 style={{ marginBottom: "16px" }}>{cp.verificationHeading}</h2>
         <p style={{ color: "var(--muted)", maxWidth: "70ch", marginBottom: "24px" }}>
-          How a third party verifies a row without having to trust ModelTrace or the gateway vendor.
+          {cp.verificationLead}
         </p>
         <div className="card" style={{ marginBottom: "32px", padding: "24px" }}>
           <ol className="list" style={{ margin: 0, display: "flex", flexDirection: "column", gap: "16px" }}>
-            <li>
-              <strong>Acquire the Export:</strong> Download the CSV audit export containing the raw payload metadata and the corresponding <code>stellar_tx_hash</code>.
-            </li>
-            <li>
-              <strong>Recompute the Hash:</strong> Locally hash the raw inference payload from your internal logs using standard SHA-256.
-            </li>
-            <li>
-              <strong>Query the Ledger:</strong> Query the public Stellar/Soroban ledger for the provided <code>stellar_tx_hash</code>.
-            </li>
-            <li>
-              <strong>Compare:</strong> Verify that the on-chain hash perfectly matches your locally computed hash. This mathematically proves the data existed in exactly that state at the recorded timestamp.
-            </li>
+            <li>{cp.verificationStep1}</li>
+            <li>{cp.verificationStep2}</li>
+            <li>{cp.verificationStep3}</li>
+            <li>{cp.verificationStep4}</li>
           </ol>
         </div>
 
         <div className="grid">
           <div className="card">
-            <h3>Data Residency & GDPR</h3>
-            <p style={{ marginBottom: "12px", fontSize: "0.95rem" }}>
-              Raw inference content (prompts, responses, PII) is <strong>never</strong> transmitted to or stored on the blockchain. ModelTrace only anchors one-way, irreversible cryptographic hashes.
-            </p>
-            <p style={{ margin: 0, fontSize: "0.95rem" }}>
-              Because the on-chain data consists strictly of anonymized identifiers and hashes, it falls outside the scope of GDPR&apos;s &quot;Right to be Forgotten.&quot; Your sensitive PII remains entirely within your secure gateway perimeter.
-            </p>
+            <h3>{cp.gdprTitle}</h3>
+            <p style={{ marginBottom: "12px", fontSize: "0.95rem" }}>{cp.gdprBody1}</p>
+            <p style={{ margin: 0, fontSize: "0.95rem" }}>{cp.gdprBody2}</p>
           </div>
 
           <div className="card">
-            <h3>Retention Guarantees</h3>
-            <p style={{ marginBottom: "12px", fontSize: "0.95rem" }}>
-              <strong>Ledger History:</strong> The cryptographic proofs (transaction hashes) are permanently burned into the public Stellar ledger history and will remain verifiable indefinitely.
-            </p>
-            <p style={{ margin: 0, fontSize: "0.95rem" }}>
-              <strong>Soroban State:</strong> Active smart contract state (such as metered escrow balances) uses Soroban&apos;s Time-To-Live (TTL) rent model. This ensures that transient billing data is safely archived once the settlement window successfully closes.
-            </p>
+            <h3>{cp.retentionTitle}</h3>
+            <p style={{ marginBottom: "12px", fontSize: "0.95rem" }}>{cp.retentionLedger}</p>
+            <p style={{ margin: 0, fontSize: "0.95rem" }}>{cp.retentionSoroban}</p>
           </div>
         </div>
       </section>

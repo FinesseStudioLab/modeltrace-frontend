@@ -1,11 +1,14 @@
+import { getMessages } from "@/lib/i18n";
+
 export default function Page() {
+  const m = getMessages();
+  const sp = m.scaffoldPages;
+
   return (
     <section className="section">
-      <span className="tag">Contributors</span>
-      <h2>Contributors surface — product definition TBD.</h2>
-      <p style={{ color: "var(--muted)" }}>
-        Scaffold page — replace with production content, data loaders, and analytics.
-      </p>
+      <span className="tag">{sp.contributorsTag}</span>
+      <h2>{sp.contributorsHeading}</h2>
+      <p style={{ color: "var(--muted)" }}>{sp.scaffoldNotice}</p>
     </section>
   );
 }

@@ -1,4 +1,6 @@
 import styles from "./charts.module.css";
+import { getMessages } from "@/lib/i18n";
+import { formatNumber } from "@/lib/i18n/formatters";
 
 interface DataTableProps {
   caption: string;
@@ -10,8 +12,6 @@ interface DataTableProps {
   /** Appends a total row. Off for charts where a total is meaningless. */
   showTotals?: boolean;
 }
-
-const format = new Intl.NumberFormat("en-US");
 
 /**
  * The numeric view of a chart.
@@ -28,8 +28,11 @@ export function DataTable({
   unit,
   showTotals = false,
 }: DataTableProps) {
+  const m = getMessages();
   const totals = columns.map((_, i) => rows.reduce((sum, r) => sum + (r.values[i] ?? 0), 0));
-  const withUnit = (n: number) => (unit ? `${format.format(n)} ${unit}` : format.format(n));
+  // formatNumber reads the active locale — no hardcoded "en-US".
+  const withUnit = (n: number) =>
+    unit ? `${formatNumber(n)} ${unit}` : formatNumber(n);
 
   return (
     <table className={styles.table}>
@@ -66,7 +69,7 @@ export function DataTable({
       {showTotals ? (
         <tfoot>
           <tr>
-            <th scope="row">Total</th>
+            <th scope="row">{m.dataTable.totalRowHeader}</th>
             {totals.map((total, i) => (
               <td key={columns[i]}>{withUnit(total)}</td>
             ))}

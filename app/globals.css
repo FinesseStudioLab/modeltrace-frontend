@@ -39,12 +39,19 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* Allow both children to shrink below their content when the viewport is
+     narrow and translated labels are longer than English. Without min-width:0
+     flex children refuse to shrink past their content and overflow instead. */
   min-height: 64px;
+  gap: 16px;
 }
 
 .brand {
   font-weight: 700;
   letter-spacing: 0.2px;
+  /* Prevent the brand from being squeezed to zero when translated nav labels
+     are long — it gets at least enough space for the logo + brand name. */
+  flex-shrink: 0;
 }
 
 .links {
@@ -53,6 +60,9 @@ a { color: inherit; text-decoration: none; }
   gap: 14px;
   color: var(--muted);
   font-size: 0.92rem;
+  /* Allow the link list to shrink below its content width so it wraps rather
+     than overflowing the nav bar when translated labels are longer. */
+  min-width: 0;
 }
 
 .hero {

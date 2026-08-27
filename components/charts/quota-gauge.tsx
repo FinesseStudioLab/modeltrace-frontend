@@ -2,6 +2,8 @@ import { ChartFrame, chartStyles as styles } from "./chart-frame";
 import { DataTable } from "./data-table";
 import { STATUS_COLORS, type StatusTone } from "./palette";
 import type { ChartBaseProps } from "./types";
+import { getMessages } from "@/lib/i18n";
+import { formatNumber, interpolate } from "@/lib/i18n/formatters";
 
 interface QuotaGaugeProps extends ChartBaseProps {
   used: number;
@@ -16,12 +18,6 @@ const R = 108;
 const CX = W / 2;
 const CY = 140;
 const TRACK = 16;
-
-const TONE_LABEL: Record<StatusTone, string> = {
-  good: "Within quota",
-  warning: "Approaching limit",
-  critical: "At limit",
-};
 
 /** Point on the 180° arc, 0 = left end, 1 = right end. */
 function point(t: number) {
@@ -51,6 +47,15 @@ export function QuotaGauge({
   unit,
   ...base
 }: QuotaGaugeProps) {
+  const m = getMessages();
+  const qg = m.quotaGauge;
+
+  const toneLabel: Record<StatusTone, string> = {
+    good: qg.toneGood,
+    warning: qg.toneWarning,
+    critical: qg.toneCritical,
+  };
+
   const safeLimit = limit > 0 ? limit : 1;
   const ratio = Math.min(1, Math.max(0, used / safeLimit));
   const tone: StatusTone =
@@ -59,6 +64,17 @@ export function QuotaGauge({
   const percent = Math.round(ratio * 100);
   const state = base.state ?? (limit <= 0 ? "empty" : "ready");
 
+  // Locale-aware number formatting — no hardcoded "en-US".
+  const usedFormatted = formatNumber(used);
+  const limitFormatted = formatNumber(limit);
+
+  const svgTitle = interpolate(qg.svgTitle, {
+    used: usedFormatted,
+    limit: limitFormatted,
+    unit: unit ? ` ${unit}` : "",
+    percent: `${percent}%`,
+  });
+
   return (
     <ChartFrame
       {...base}
@@ -66,13 +82,13 @@ export function QuotaGauge({
       unit={unit}
       table={
         <DataTable
-          caption={`${base.title} — full values`}
-          rowHeader="Measure"
+          caption={`${base.title} ${qg.fullValuesSuffix}`}
+          rowHeader={qg.measureUsed /* "Measure" column header */}
           columns={["Value"]}
           rows={[
-            { label: "Used", color, values: [used] },
-            { label: "Limit", values: [limit] },
-            { label: "Remaining", values: [Math.max(0, limit - used)] },
+            { label: qg.measureUsed, color, values: [used] },
+            { label: qg.measureLimit, values: [limit] },
+            { label: qg.measureRemaining, values: [Math.max(0, limit - used)] },
           ]}
           unit={unit}
         />
@@ -95,7 +111,7 @@ export function QuotaGauge({
             strokeWidth={TRACK}
             strokeLinecap="round"
           >
-            <title>{`${used} of ${limit}${unit ? ` ${unit}` : ""} used (${percent}%)`}</title>
+            <title>{svgTitle}</title>
           </path>
         ) : null}
 
@@ -121,10 +137,10 @@ export function QuotaGauge({
           {percent}%
         </text>
         <text x={CX} y={CY - 4} textAnchor="middle" className={styles.gaugeCaption}>
-          {TONE_LABEL[tone]}
+          {toneLabel[tone]}
         </text>
         <text x={CX} y={CY + 16} textAnchor="middle" className={styles.gaugeCaption}>
-          {used.toLocaleString("en-US")} / {limit.toLocaleString("en-US")}
+          {usedFormatted} / {limitFormatted}
           {unit ? ` ${unit}` : ""}
         </text>
       </svg>

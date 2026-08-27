@@ -3,9 +3,12 @@
 import { useState } from "react";
 import { StackedBars } from "../../../components/charts";
 import type { UsageResponse } from "../../../lib/api/operators";
+import { useMessages } from "@/lib/i18n";
 
 export function UsageChartInteractive({ data }: { data: UsageResponse }) {
   const [view, setView] = useState<"model" | "payer">("model");
+  const m = useMessages();
+  const uc = m.usageChart;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -23,7 +26,7 @@ export function UsageChartInteractive({ data }: { data: UsageResponse }) {
             fontSize: "0.78rem"
           }}
         >
-          By Model
+          {uc.byModel}
         </button>
         <button
           onClick={() => setView("payer")}
@@ -38,13 +41,13 @@ export function UsageChartInteractive({ data }: { data: UsageResponse }) {
             fontSize: "0.78rem"
           }}
         >
-          By Payer
+          {uc.byPayer}
         </button>
       </div>
-      
+
       <StackedBars
-        title={`Usage by ${view}`}
-        summary={`Weekly inference volume by ${view}.`}
+        title={view === "model" ? uc.titleByModel : uc.titleByPayer}
+        summary={view === "model" ? uc.summaryByModel : uc.summaryByPayer}
         labels={data.labels}
         series={view === "model" ? data.usageByModel : data.usageByPayer}
         unit="k tokens"

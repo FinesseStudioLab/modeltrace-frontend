@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { resolveSiteUrl } from "@/lib/site-url";
+import { getMessages, LOCALE_META, resolveLocale } from "@/lib/i18n";
 import "./globals.css";
 
 const siteUrl = resolveSiteUrl();
@@ -35,19 +36,23 @@ export const metadata: Metadata = {
   },
 };
 
-const nav = [
-  ["Product", "/product"],
-  ["Contracts", "/contracts"],
-  ["Operators", "/operators"],
-  ["Compliance", "/compliance"],
-  ["Roadmap", "/roadmap"],
-  ["Contributors", "/contributors"],
-  ["Docs", "/docs"],
-] as const;
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = resolveLocale();
+  const { dir } = LOCALE_META[locale];
+  const m = getMessages(locale);
+
+  const nav = [
+    [m.nav.product, "/product"],
+    [m.nav.contracts, "/contracts"],
+    [m.nav.operators, "/operators"],
+    [m.nav.compliance, "/compliance"],
+    [m.nav.roadmap, "/roadmap"],
+    [m.nav.contributors, "/contributors"],
+    [m.nav.docs, "/docs"],
+  ] as const;
+
   return (
-    <html lang="en">
+    <html lang={locale} dir={dir}>
       <body>
         <header className="nav">
           <div className="container nav-inner">
@@ -60,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 className="nav-logo"
                 unoptimized
               />
-              <span className="brand-text">ModelTrace</span>
+              <span className="brand-text">{m.nav.brand}</span>
             </Link>
             <nav className="links">
               {nav.map(([label, href]) => (

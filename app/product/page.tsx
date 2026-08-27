@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { getRouteDescription } from "@/lib/site-map";
 
 export const metadata: Metadata = {
   title: "Product",
-  description: "Verifiable usage, dispute-free settlement, and immutable audit trails.",
+  description: getRouteDescription("/product"),
 };
 
 function PlannedTag() {

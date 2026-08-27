@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getRouteDescription } from "@/lib/site-map";
 import { Suspense } from "react";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { PanelLoading } from "./components/PanelStates";
@@ -9,7 +10,7 @@ import SettlementsPanel from "./components/SettlementsPanel";
 
 export const metadata: Metadata = {
   title: "Operators",
-  description: "Operator dashboard — live testnet data and quota headroom.",
+  description: getRouteDescription("/operators"),
 };
 
 export default function Page() {

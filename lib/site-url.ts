@@ -16,6 +16,10 @@ export function resolveSiteUrl(env: SiteUrlEnv = process.env): string {
     return normalizeUrl(env.NEXT_PUBLIC_SITE_URL.trim());
   }
 
+  if (env.VERCEL_PROJECT_PRODUCTION_URL?.trim()) {
+    return normalizeUrl(env.VERCEL_PROJECT_PRODUCTION_URL.trim());
+  }
+
   if (env.VERCEL_URL?.trim()) {
     return normalizeUrl(env.VERCEL_URL.trim());
   }

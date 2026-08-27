@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { getRouteDescription } from "@/lib/site-map";
 
 export const metadata: Metadata = {
   title: "Compliance",
-  description: "Verifiable lineage, GDPR-compliant data residency, and deterministic evidence.",
+  description: getRouteDescription("/compliance"),
 };
 
 export default function CompliancePage() {

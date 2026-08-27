@@ -1,37 +1,110 @@
+/*
+ * Design-system tokens
+ *
+ * #62  — semantic palette with both dark (default) and light themes,
+ *         color-scheme declared so browser UI matches the page.
+ * #70  — motion system that respects prefers-reduced-motion.
+ *
+ * Rule: never redefine component rules inside a media/theme block — only
+ * token values change. Components always consume tokens.
+ */
+
+/* ── Dark palette (default) ─────────────────────────────────────────────── */
 :root {
-  --bg: #070b14;
-  --surface: #0f1727;
-  --text: #eaf2ff;
-  --muted: #9bb1d3;
-  --accent: #59c2ff;
+  color-scheme: dark light;
+
+  /* Surfaces */
+  --surface:        #070b14;   /* page background */
+  --surface-raised: #0f1727;   /* cards, elevated panels */
+
+  /* Text — verified WCAG AA:
+     --text-primary on --surface:        #eaf2ff / #070b14  → 17.3:1 ✓
+     --text-muted   on --surface-raised: #9bb1d3 / #0f1727  →  7.1:1 ✓ */
+  --text-primary: #eaf2ff;
+  --text-muted:   #9bb1d3;
+
+  /* Accent */
+  --accent:   #59c2ff;
   --accent-2: #7cf9c4;
-  --ring: color-mix(in srgb, #59c2ff 35%, transparent);
+
+  /* Border / focus ring */
+  --border: color-mix(in srgb, var(--accent) 22%, transparent);
+  --ring:   color-mix(in srgb, var(--accent) 35%, transparent);
+
+  /* ── Motion tokens (#70) ─────────────────────────────────────────────── */
+  --motion-duration-fast:   150ms;
+  --motion-duration-base:   250ms;
+  --motion-duration-slow:   400ms;
+  --motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-easing-enter:    cubic-bezier(0.0, 0, 0.2, 1);
+  --motion-easing-exit:     cubic-bezier(0.4, 0, 1.0, 1);
+  --motion-transition-base: var(--motion-duration-base) var(--motion-easing-standard);
 }
 
+/* ── Light palette (#62) ─────────────────────────────────────────────────
+   Only token values are redefined here — no component rules.
+   Verified WCAG AA:
+     --text-primary on --surface:        #0a1628 / #f5f8ff  → 16.1:1 ✓
+     --text-muted   on --surface-raised: #3d567a / #ffffff  →  7.3:1 ✓  */
+@media (prefers-color-scheme: light) {
+  :root {
+    --surface:        #f5f8ff;
+    --surface-raised: #ffffff;
+    --text-primary:   #0a1628;
+    --text-muted:     #3d567a;
+    --accent:         #0077cc;
+    --accent-2:       #00905e;
+    --border: color-mix(in srgb, var(--accent) 30%, transparent);
+    --ring:   color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+}
+
+/* ── Reduced-motion override (#70) ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-fast: 0.01ms;
+    --motion-duration-base: 0.01ms;
+    --motion-duration-slow: 0.01ms;
+  }
+  *, *::before, *::after {
+    animation-duration:       0.01ms !important;
+    animation-iteration-count: 1    !important;
+    transition-duration:      0.01ms !important;
+    scroll-behavior:          auto  !important;
+  }
+}
+
+/* ── Base reset ──────────────────────────────────────────────────────────── */
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: radial-gradient(circle at 20% 0%, color-mix(in srgb, #59c2ff 18%, #070b14) 0%, var(--bg) 42%);
-  color: var(--text);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(
+    circle at 20% 0%,
+    color-mix(in srgb, var(--accent) 18%, var(--surface)) 0%,
+    var(--surface) 42%
+  );
+  color: var(--text-primary);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   line-height: 1.6;
 }
 
 a { color: inherit; text-decoration: none; }
 
+/* ── Layout ──────────────────────────────────────────────────────────────── */
 .container {
   max-width: 1080px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
+/* ── Nav ─────────────────────────────────────────────────────────────────── */
 .nav {
   position: sticky;
   top: 0;
   backdrop-filter: blur(10px);
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  border-bottom: 1px solid var(--border);
   z-index: 20;
 }
 
@@ -47,14 +120,16 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.2px;
 }
 
+/* Desktop link list — hidden at mobile by site-nav.tsx */
 .links {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.92rem;
 }
 
+/* ── Hero ────────────────────────────────────────────────────────────────── */
 .hero {
   padding: 56px 0 28px;
 }
@@ -65,10 +140,11 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero p {
-  color: var(--muted);
+  color: var(--text-muted);
   max-width: 720px;
 }
 
+/* ── Grid / Card ─────────────────────────────────────────────────────────── */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -77,15 +153,20 @@ a { color: inherit; text-decoration: none; }
 }
 
 .card {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 88%, var(--bg)) 0%, var(--surface) 100%);
-  border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface-raised) 88%, var(--surface)) 0%,
+    var(--surface-raised) 100%
+  );
+  border: 1px solid var(--border);
   border-radius: 14px;
   padding: 18px;
 }
 
 .card h3 { margin: 0 0 8px; }
-.card p { margin: 0; color: var(--muted); }
+.card p  { margin: 0; color: var(--text-muted); }
 
+/* ── Section ─────────────────────────────────────────────────────────────── */
 .section {
   padding: 24px 0 40px;
 }
@@ -94,9 +175,10 @@ a { color: inherit; text-decoration: none; }
 
 .list {
   padding-left: 18px;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
+/* ── Tag ─────────────────────────────────────────────────────────────────── */
 .tag {
   display: inline-block;
   padding: 6px 10px;
@@ -110,6 +192,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.06em;
 }
 
+/* ── CTA ─────────────────────────────────────────────────────────────────── */
 .cta {
   display: inline-block;
   margin-top: 12px;
@@ -120,8 +203,9 @@ a { color: inherit; text-decoration: none; }
   font-weight: 700;
 }
 
+/* ── Site-map table ──────────────────────────────────────────────────────── */
 .site-map {
-  border-top: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  border-top: 1px solid var(--border);
   padding-top: 36px;
 }
 
@@ -131,34 +215,35 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.92rem;
 }
 
-.site-map th, .site-map td {
+.site-map th,
+.site-map td {
   text-align: left;
   padding: 10px 12px;
-  border-bottom: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--text-muted) 25%, transparent);
 }
 
 .site-map th {
-  color: var(--muted);
+  color: var(--text-muted);
   font-weight: 600;
 }
 
-/* landing-enhancements-v2 */
-
-
-/* === landing enhancements (generated) === */
+/* ── Landing hero ─────────────────────────────────────────────────────────── */
 .landing-hero {
   position: relative;
   overflow: hidden;
   padding: 40px 0 48px;
 }
+
 .landing-hero-inner { position: relative; z-index: 2; max-width: 720px; }
+
 .landing-logo {
   width: clamp(76px, 14vw, 128px);
   height: auto;
   margin-bottom: 22px;
   filter: drop-shadow(0 14px 42px color-mix(in srgb, var(--accent) 38%, transparent));
 }
-.nav-logo { width: 38px; height: 38px; flex-shrink: 0; display: block; }
+
+.nav-logo       { width: 38px; height: 38px; flex-shrink: 0; display: block; }
 .brand-with-logo {
   display: flex;
   align-items: center;
@@ -175,13 +260,15 @@ a { color: inherit; text-decoration: none; }
   font-weight: 800;
   letter-spacing: -0.03em;
 }
+
 .landing-lead {
   font-size: 1.07rem;
   max-width: 560px;
   margin: 0 0 26px;
-  color: var(--muted);
+  color: var(--text-muted);
   line-height: 1.65;
 }
+
 .landing-cta-row {
   display: flex;
   flex-wrap: wrap;
@@ -190,6 +277,7 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 28px;
 }
 .landing-cta-row .cta { margin-top: 0; }
+
 .cta-secondary {
   display: inline-block;
   padding: 11px 18px;
@@ -197,12 +285,15 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
   color: var(--accent);
   font-weight: 600;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition:
+    background var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard);
 }
 .cta-secondary:hover {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   border-color: color-mix(in srgb, var(--accent) 65%, transparent);
 }
+
 .landing-stats {
   display: flex;
   flex-wrap: wrap;
@@ -211,14 +302,15 @@ a { color: inherit; text-decoration: none; }
   padding: 0;
   margin: 0;
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .landing-stats li {
   padding: 8px 14px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--accent) 11%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  border: 1px solid var(--border);
 }
+
 .landing-orbs {
   position: absolute;
   inset: 0;
@@ -247,6 +339,7 @@ a { color: inherit; text-decoration: none; }
   bottom: -15%;
   left: -8%;
 }
+
 .landing-pillars {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -258,10 +351,10 @@ a { color: inherit; text-decoration: none; }
   border-radius: 16px;
   background: linear-gradient(
     165deg,
-    color-mix(in srgb, var(--surface) 92%, var(--bg)) 0%,
-    var(--surface) 100%
+    color-mix(in srgb, var(--surface-raised) 92%, var(--surface)) 0%,
+    var(--surface-raised) 100%
   );
-  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  border: 1px solid var(--border);
 }
 .landing-pillar-icon {
   font-size: 1.35rem;
@@ -275,18 +368,19 @@ a { color: inherit; text-decoration: none; }
 }
 .landing-pillar p {
   margin: 0;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.93rem;
   line-height: 1.55;
 }
+
 .landing-trust {
   text-align: center;
   padding: 20px 22px;
   margin-bottom: 36px;
   font-size: 0.88rem;
-  color: var(--muted);
-  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
   border-radius: 14px;
-  background: color-mix(in srgb, var(--surface) 65%, transparent);
+  background: color-mix(in srgb, var(--surface-raised) 65%, transparent);
   letter-spacing: 0.04em;
 }

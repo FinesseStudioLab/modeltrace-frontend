@@ -1,0 +1,40 @@
+name: Site-map freshness
+
+# Fails if docs/SITE_MAP.md has not been regenerated after a change to
+# lib/site-map.ts, preventing the route table from drifting (#58).
+
+on:
+  pull_request:
+    paths:
+      - "lib/site-map.ts"
+      - "docs/SITE_MAP.md"
+      - "scripts/generate-site-map-md.ts"
+      - ".github/workflows/site-map-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "lib/site-map.ts"
+      - "docs/SITE_MAP.md"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Regenerate docs/SITE_MAP.md
+        run: npm run gen:site-map
+
+      - name: Fail if SITE_MAP.md is stale
+        run: |
+          if ! git diff --exit-code docs/SITE_MAP.md; then
+            echo "::error::docs/SITE_MAP.md is stale — run 'npm run gen:site-map' and commit the result."
+            exit 1
+          fi

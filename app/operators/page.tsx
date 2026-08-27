@@ -41,7 +41,7 @@ export default function Page() {
   return (
     <section className="section">
       <span className="tag">Operators</span>
-      <h2>Operator dashboard</h2>
+      <h1>Operator dashboard</h1>
       <p style={{ color: "var(--muted)", maxWidth: "62ch" }}>
         Attestation volume, usage by model, and quota headroom. Every chart on
         this page ships its numbers as a table — an auditor asking for the

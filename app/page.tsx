@@ -17,10 +17,11 @@ export default function HomePage() {
           <BrandLogo className="landing-logo" aria-label="ModelTrace logo" />
           <span className="tag">Stellar · Soroban · AI governance</span>
           <h1 className="hero-headline">Prove every inference.</h1>
-          <p
-            className="landing-lead"
-            dangerouslySetInnerHTML={{ __html: "ModelTrace turns AI usage into <strong>attested facts on-chain</strong>: which model ran, under which policy, and what it costs\u2014so procurement, finance, and auditors share one neutral layer." }}
-          />
+          <p className="landing-lead">
+            ModelTrace turns AI usage into <strong>attested facts on-chain</strong>:
+            {" "}which model ran, under which policy, and what it costs{"\u2014"}so
+            procurement, finance, and auditors share one neutral layer.
+          </p>
           <div className="landing-cta-row">
             <Link href="/roadmap" className="cta">Ship the roadmap</Link>
             <Link href="/contracts" className="cta-secondary">Read the contracts story</Link>

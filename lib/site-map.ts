@@ -10,7 +10,7 @@ export const publicRoutes = [
     path: "/product",
     purpose: "Personas, pricing hooks, integration story",
     status: "Planned",
-    description: "Explore ModelTrace personas, pricing hooks, and integration story.",
+    description: "Verifiable usage, dispute-free settlement, and immutable audit trails.",
   },
   {
     path: "/contracts",
@@ -22,13 +22,13 @@ export const publicRoutes = [
     path: "/operators",
     purpose: "Dashboard preview for AI gateways",
     status: "Planned",
-    description: "Preview the ModelTrace dashboard planned for AI gateway operators.",
+    description: "Operator dashboard — live testnet data and quota headroom.",
   },
   {
     path: "/compliance",
     purpose: "Audit exports and policy packs",
     status: "Planned",
-    description: "Explore ModelTrace audit exports and policy packs.",
+    description: "Verifiable lineage, GDPR-compliant data residency, and deterministic evidence.",
   },
   {
     path: "/roadmap",

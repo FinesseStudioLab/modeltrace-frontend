@@ -1,12 +1,23 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { getSiteUrl, isPreviewDeployment, SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
+import { isPreviewDeployment, SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
+import { resolveSiteUrl } from "@/lib/site-url";
 import { getStructuredData, serializeJsonLd } from "@/lib/structured-data";
 import "./globals.css";
 
+const siteUrl = resolveSiteUrl();
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-sans",
+  fallback: ["ui-sans-serif", "system-ui", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+});
+
 export const metadata: Metadata = {
-  metadataBase: getSiteUrl(),
+  metadataBase: new URL(siteUrl),
   title: {
     default: SITE_NAME,
     template: `%s | ${SITE_NAME}`,
@@ -16,9 +27,13 @@ export const metadata: Metadata = {
   robots: isPreviewDeployment()
     ? { index: false, follow: false }
     : { index: true, follow: true },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
+    url: "/",
     type: "website",
     locale: "en_US",
   },
@@ -43,12 +58,14 @@ const nav = [
   ["Docs", "/docs"],
 ] as const;
 
+/* eslint-disable react/no-danger -- JSON-LD is serialized with '<' escaped before injection. */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const structuredData = getStructuredData();
 
   return (
     <html lang="en">
-      <body>
+      <body className={inter.variable}>
+        {/* Serialized by serializeJsonLd, which escapes '<' to prevent script injection. */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData) }}
@@ -78,3 +95,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+/* eslint-enable react/no-danger */

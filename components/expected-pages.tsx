@@ -1,4 +1,4 @@
-import { publicRoutes } from "@/lib/site-map";
+import { publicRoutes } from "../lib/site-map";
 
 export function ExpectedPages() {
   return (

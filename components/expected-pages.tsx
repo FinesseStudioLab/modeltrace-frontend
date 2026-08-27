@@ -23,7 +23,7 @@ export function ExpectedPages() {
             <tr key="/operators"><td><code>/operators</code></td><td>Dashboard preview for AI gateways</td><td>Planned</td></tr>
             <tr key="/compliance"><td><code>/compliance</code></td><td>Audit exports and policy packs</td><td>Planned</td></tr>
             <tr key="/roadmap"><td><code>/roadmap</code></td><td>Milestones vs grants</td><td>Scaffold</td></tr>
-            <tr key="/contributors"><td><code>/contributors</code></td><td>Good first issues and guild roles</td><td>Planned</td></tr>
+            <tr key="/contributors"><td><code>/contributors</code></td><td>Good first issues and contribution workflow</td><td>Shipped</td></tr>
             <tr key="/docs"><td><code>/docs</code></td><td>Technical reference hub</td><td>Scaffold</td></tr>
           </tbody>
         </table>

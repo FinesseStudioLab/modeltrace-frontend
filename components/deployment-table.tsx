@@ -19,7 +19,15 @@ export function DeploymentTable({
       {networks.map((network) => (
         <section key={network.network} className="deploy-network">
           <h3 className="deploy-network-title">{network.label}</h3>
-          <div style={{ overflowX: "auto", minWidth: 0 }}>
+          {/* Scrolls on narrow screens, so it must be keyboard-focusable:
+              axe's scrollable-region-focusable requires a tab stop on any
+              scroll container, or the table is unreachable without a mouse. */}
+          <div
+            style={{ overflowX: "auto", minWidth: 0 }}
+            tabIndex={0}
+            role="region"
+            aria-label={`${network.label} deployment table`}
+          >
             <table className="deploy-grid">
               <thead>
                 <tr>

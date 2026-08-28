@@ -91,7 +91,9 @@ export default function Page() {
           <li>
             Clone and build the contracts with the pinned toolchain (requires
             Rust 1.84+ and the Soroban WASM target):
-            <pre className="contracts-code">{`git clone https://github.com/FinesseStudioLab/modeltrace-contract
+            {/* Scrolls on narrow screens (unbreakable command lines), so it
+                needs a tab stop to satisfy axe's scrollable-region-focusable. */}
+            <pre className="contracts-code" tabIndex={0}>{`git clone https://github.com/FinesseStudioLab/modeltrace-contract
 cd modeltrace-contract
 rustup target add wasm32v1-none
 cargo build --release --target wasm32v1-none`}</pre>
@@ -100,7 +102,7 @@ cargo build --release --target wasm32v1-none`}</pre>
             Hash the artifact for the contract you want to check. The release
             profile in the workspace (opt-level z, LTO, stripped) is what makes
             the output reproducible:
-            <pre className="contracts-code">{`sha256sum target/wasm32v1-none/release/audit_registry.wasm
+            <pre className="contracts-code" tabIndex={0}>{`sha256sum target/wasm32v1-none/release/audit_registry.wasm
 sha256sum target/wasm32v1-none/release/usage_meter.wasm
 sha256sum target/wasm32v1-none/release/payment_router.wasm`}</pre>
           </li>

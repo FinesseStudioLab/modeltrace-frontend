@@ -76,6 +76,10 @@ export function ChartFrame({
             className={wide ? `${styles.plot} ${styles.plotWide}` : styles.plot}
             role="img"
             aria-label={summary}
+            // Wide plots scroll on narrow screens (520px legibility floor); a
+            // scroll container without a tab stop fails axe's
+            // scrollable-region-focusable and is unreachable by keyboard.
+            tabIndex={wide ? 0 : undefined}
           >
             {children}
           </div>
@@ -103,7 +107,11 @@ export function ChartFrame({
           {table ? (
             <details className={styles.details}>
               <summary>{tableLabel}</summary>
-              <div className={styles.tableWrap}>{table}</div>
+              {/* Same rule as the plot: the nowrap table scrolls on narrow
+                  screens, so the wrapper needs a tab stop. */}
+              <div className={styles.tableWrap} tabIndex={0}>
+                {table}
+              </div>
             </details>
           ) : null}
         </>

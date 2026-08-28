@@ -47,6 +47,7 @@ const nav = [
   ["Product", "/product"],
   ["Contracts", "/contracts"],
   ["Operators", "/operators"],
+  ["Explore", "/explore"],
   ["Compliance", "/compliance"],
   ["Roadmap", "/roadmap"],
   ["Contributors", "/contributors"],

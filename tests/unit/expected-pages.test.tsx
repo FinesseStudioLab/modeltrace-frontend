@@ -24,6 +24,7 @@ describe("ExpectedPages", () => {
       "/product",
       "/contracts",
       "/operators",
+      "/explore",
       "/compliance",
       "/roadmap",
       "/contributors",

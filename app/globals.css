@@ -160,8 +160,14 @@ a { color: inherit; text-decoration: none; }
     display: flex;
   }
 
+  /* Keep the desktop link row visible and wrapping on small screens so the
+   * route links remain reachable without first opening the disclosure menu.
+   * The mobile panel is still available as an alternate navigation path. */
   .links {
-    display: none;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding-top: 8px;
   }
 
   .nav-mobile-panel {

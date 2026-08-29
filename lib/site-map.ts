@@ -19,6 +19,7 @@ export const siteMap: readonly SiteMapEntry[] = [
   { label: "Product", href: "/product", status: "Planned" },
   { label: "Contracts", href: "/contracts", status: "Planned" },
   { label: "Operators", href: "/operators", status: "Scaffold" },
+  { label: "Explore", href: "/explore", status: "Shipped" },
   { label: "Compliance", href: "/compliance", status: "Planned" },
   { label: "Roadmap", href: "/roadmap", status: "Shipped" },
   { label: "Contributors", href: "/contributors", status: "Planned" },

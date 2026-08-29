@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { QuickstartCompleteBeacon } from "@/components/analytics/quickstart-complete-beacon";
+import { QuickstartStartBeacon } from "@/components/analytics/quickstart-start-beacon";
 import { DocsSidebar } from "../docs-sidebar";
 import { DocsNext } from "../docs-next";
 
@@ -14,6 +16,7 @@ export default function IntegrationPage() {
     <>
       <DocsSidebar activeHref="/docs/integration" />
       <article className="docs-content">
+        <QuickstartStartBeacon />
         <span className="tag">Integration guide</span>
         <h1>Running it locally</h1>
         <p className="docs-lead">
@@ -92,15 +95,24 @@ npm run dev     # http://localhost:3000`}</code>
           <Link href="/docs/security">Key custody</Link>.
         </p>
 
+        <p>
+          One variable is live today rather than planned:{" "}
+          <code>NEXT_PUBLIC_PLAUSIBLE_DOMAIN</code> enables cookieless analytics and
+          Core Web Vitals reporting when set, and both are silent no-ops when it
+          isn&apos;t — nothing above depends on it, and neither does local dev.
+        </p>
+
         <h2>Quality gates</h2>
         <p>
-          CI runs exactly these three commands on every pull request, so running
+          CI runs exactly these five commands on every pull request, so running
           them locally reproduces it:
         </p>
         <pre className="docs-code">
           <code>{`npm run lint        # eslint
 npx tsc --noEmit    # typecheck
-npm run build       # production build`}</code>
+npm test            # unit tests
+npm run build       # production build
+npm run size        # bundle-size budget`}</code>
         </pre>
 
         <h2>Adding a route</h2>
@@ -111,6 +123,7 @@ npm run build       # production build`}</code>
           site claims something the build does not deliver.
         </p>
 
+        <QuickstartCompleteBeacon />
         <DocsNext after="/docs/integration" />
       </article>
     </>

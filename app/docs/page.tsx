@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DocsEntryBeacon } from "@/components/analytics/docs-entry-beacon";
 import { DocsSidebar } from "./docs-sidebar";
 import { docsSections } from "./nav";
 
@@ -14,6 +15,7 @@ export default function DocsPage() {
     <>
       <DocsSidebar />
       <article className="docs-content">
+        <DocsEntryBeacon />
         <span className="tag">Documentation</span>
         <h1>Technical reference</h1>
         <p className="docs-lead">

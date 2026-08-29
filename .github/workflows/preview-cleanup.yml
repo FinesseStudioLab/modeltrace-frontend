@@ -1,0 +1,57 @@
+name: Preview cleanup
+
+# Previews accumulate: every push to every pull request creates one, and
+# nothing removed them. This deletes the deployments belonging to a pull
+# request once it is merged or closed.
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: read
+
+jobs:
+  cleanup:
+    name: Remove preview deployments
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check deployment credentials
+        id: creds
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -n "$VERCEL_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Cleanup skipped::No VERCEL_TOKEN available."
+          fi
+
+      - name: Install Vercel CLI
+        if: steps.creds.outputs.available == 'true'
+        run: npm install --global vercel@latest
+
+      # Deployments are tagged with the PR number by the preview workflow via
+      # the branch alias, so they can be found again without keeping state.
+      - name: Remove deployments for this pull request
+        if: steps.creds.outputs.available == 'true'
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+          # `vercel list` prints one deployment per line; filter to this branch.
+          urls=$(vercel list --token="$TOKEN" --meta githubCommitRef="$BRANCH" \
+                   | grep -Eo 'https://[a-z0-9.-]+\.vercel\.app' || true)
+
+          if [ -z "$urls" ]; then
+            echo "::notice title=Nothing to remove::No deployments found for $BRANCH."
+            exit 0
+          fi
+
+          echo "$urls" | while read -r url; do
+            echo "removing $url"
+            vercel remove "$url" --yes --token="$TOKEN" || true
+          done

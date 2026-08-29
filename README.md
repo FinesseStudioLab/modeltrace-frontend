@@ -217,17 +217,29 @@ own budget, not a stand-in for Next's dashboard figure. CI runs it after
 ### Preview deployments
 
 `.github/workflows/preview.yml` deploys a preview and comments the URL on every
-pull request. It needs three repository secrets:
+pull request. It needs four repository secrets:
 
 | Secret | Where to find it |
 | ------ | ---------------- |
 | `VERCEL_TOKEN` | Vercel account settings → Tokens |
 | `VERCEL_ORG_ID` | `.vercel/project.json` after `vercel link` |
 | `VERCEL_PROJECT_ID` | `.vercel/project.json` after `vercel link` |
+| `STAGING_BACKEND_URL` | Your staging API origin — previews are pinned to it |
 
 The workflow runs on `pull_request`, not `pull_request_target`, so a pull
 request from a fork cannot reach these secrets. Those runs skip the deploy and
 report a notice instead of failing.
+
+Previews build with `NEXT_PUBLIC_DEPLOY_ENV=preview`, which pins them to
+testnet, shows a preview badge, and serves `Disallow: /` plus an
+`X-Robots-Tag: noindex` header so they cannot compete with production in
+search. `lib/deploy-env.ts` re-checks those targets during the build and fails
+it if a preview is configured to reach production, rather than trusting the
+workflow to have set every variable correctly.
+
+Lighthouse runs against the deployed preview and posts its scores to the pull
+request. `.github/workflows/preview-cleanup.yml` removes a pull request's
+deployments when it is merged or closed, so previews do not accumulate.
 
 ---
 

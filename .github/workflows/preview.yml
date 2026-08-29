@@ -22,6 +22,8 @@ jobs:
   preview:
     name: Deploy preview
     runs-on: ubuntu-latest
+    outputs:
+      url: ${{ steps.deploy.outputs.url }}
     steps:
       - name: Check deployment credentials
         id: creds
@@ -55,11 +57,18 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: vercel pull --yes --environment=preview --token="${{ secrets.VERCEL_TOKEN }}"
 
+      # Previews are built from unreviewed branches, so they are pinned to
+      # testnet and staging here. lib/deploy-env.ts re-checks these at build
+      # time and fails the build rather than deploying something pointed at
+      # production.
       - name: Build
         if: steps.creds.outputs.available == 'true'
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          NEXT_PUBLIC_DEPLOY_ENV: preview
+          NEXT_PUBLIC_STELLAR_NETWORK: testnet
+          NEXT_PUBLIC_BACKEND_URL: ${{ secrets.STAGING_BACKEND_URL }}
         run: vercel build --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Deploy
@@ -83,6 +92,70 @@ jobs:
           script: |
             const marker = '<!-- preview-deployment -->';
             const body = `${marker}\n**Preview deployment**\n\n${process.env.PREVIEW_URL}\n\nBuilt from ${context.sha.slice(0, 7)}.`;
+            const {owner, repo} = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.rest.issues.listComments({owner, repo, issue_number});
+            const existing = comments.data.find((c) => c.body?.startsWith(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({owner, repo, comment_id: existing.id, body});
+            } else {
+              await github.rest.issues.createComment({owner, repo, issue_number, body});
+            }
+
+  lighthouse:
+    name: Lighthouse
+    needs: preview
+    if: needs.preview.outputs.url != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Run through npx rather than a third-party action: this job has
+      # pull-requests: write, and the fewer external actions that run with it
+      # the smaller the surface.
+      - name: Collect Lighthouse scores
+        env:
+          PREVIEW_URL: ${{ needs.preview.outputs.url }}
+        run: |
+          npx -y @lhci/cli@0.14.x collect \
+            --url="$PREVIEW_URL" \
+            --url="$PREVIEW_URL/docs" \
+            --numberOfRuns=1
+          npx -y @lhci/cli@0.14.x upload --target=filesystem --outputDir=./lhci
+
+      - name: Comment scores
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const dir = './lhci';
+            const manifest = JSON.parse(fs.readFileSync(`${dir}/manifest.json`, 'utf8'));
+
+            const pct = (n) => Math.round(n * 100);
+            const rows = manifest.map((entry) => {
+              const r = JSON.parse(fs.readFileSync(entry.jsonPath, 'utf8'));
+              const c = r.categories;
+              const path = new URL(r.finalDisplayedUrl ?? r.finalUrl).pathname;
+              return `| \`${path}\` | ${pct(c.performance.score)} | ${pct(c.accessibility.score)} | ${pct(c['best-practices'].score)} | ${pct(c.seo.score)} |`;
+            });
+
+            const marker = '<!-- lighthouse -->';
+            const body = [
+              marker,
+              '**Lighthouse**',
+              '',
+              '| Page | Perf | A11y | Best practices | SEO |',
+              '| --- | --- | --- | --- | --- |',
+              ...rows,
+            ].join('\n');
+
             const {owner, repo} = context.repo;
             const issue_number = context.issue.number;
             const comments = await github.rest.issues.listComments({owner, repo, issue_number});

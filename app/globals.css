@@ -836,3 +836,32 @@ button.wallet-pill {
   padding: 1px 6px;
   font-size: var(--text-xs);
 }
+
+/* === Preview badge =====================================================
+ * Marks a non-production deployment. Sits in normal flow above the sticky
+ * header rather than fixed over it, so it cannot cover content or introduce
+ * horizontal overflow at mobile widths.
+ * ==================================================================== */
+.preview-badge {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  padding: 8px 20px;
+  background: color-mix(in srgb, var(--accent-2) 20%, var(--bg));
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-2) 45%, transparent);
+  color: var(--text);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.preview-badge strong {
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-size: 0.72rem;
+  color: color-mix(in srgb, var(--accent-2) 80%, white);
+}
+
+.preview-badge span {
+  color: var(--muted);
+}

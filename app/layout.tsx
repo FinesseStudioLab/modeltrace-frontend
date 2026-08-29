@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { resolveSiteUrl } from "@/lib/site-url";
 import { SiteNav } from "@/components/site-nav";
 import "./globals.css";
+import "./a11y.css";
 
 const siteUrl = resolveSiteUrl();
 const inter = Inter({
@@ -46,8 +47,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.variable}>
+        <a className="skip-link" href="#main">
+          Skip to main content
+        </a>
         <SiteNav />
-        <main className="container">{children}</main>
+        <main className="container" id="main" tabIndex={-1}>
+          {children}
+        </main>
       </body>
     </html>
   );

@@ -81,9 +81,20 @@
   text-align: right;
   padding: 6px 10px;
   border-bottom: 1px solid color-mix(in srgb, var(--chart-ink-muted) 20%, transparent);
+  /* Numeric value cells must not wrap — digits stay on one line so columns
+     align. Row-header cells (first column) carry translated labels that may
+     be 30-40% longer than English; they are allowed to wrap so they do not
+     push the table wider than its container. */
   white-space: nowrap;
 }
-.table th:first-child, .table td:first-child { text-align: left; }
+.table th:first-child, .table td:first-child {
+  text-align: left;
+  white-space: normal;
+  /* Keep the label column from growing so wide that value columns are
+     squeezed. A min-content basis plus word-wrap gives translated strings
+     room to breathe without taking over the layout. */
+  word-break: break-word;
+}
 .table thead th { color: var(--chart-ink-muted); font-weight: 600; }
 .tableSwatch {
   display: inline-block;

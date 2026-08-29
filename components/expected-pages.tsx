@@ -1,22 +1,33 @@
+import { getMessages } from "@/lib/i18n";
+
 export function ExpectedPages() {
+  const m = getMessages();
+  const ep = m.expectedPages;
+
   return (
     <section className="section site-map" id="site-map">
-      <span className="tag">Site map</span>
-      <h2>Expected pages (delivery backlog)</h2>
+      <span className="tag">{ep.tag}</span>
+      <h2>{ep.heading}</h2>
       <p style={{ color: "var(--muted)", maxWidth: 720 }}>
-        This table is the contract between product and engineering. Routes marked scaffold ship as
-        placeholders; planned routes are tracked for sprint planning.
+        {ep.intro}
       </p>
       <div style={{ overflowX: "auto", marginTop: 16 }}>
         <table>
           <thead>
             <tr>
-              <th>Route</th>
-              <th>Purpose</th>
-              <th>Status</th>
+              <th>{ep.colRoute}</th>
+              <th>{ep.colPurpose}</th>
+              <th>{ep.colStatus}</th>
             </tr>
           </thead>
           <tbody>
+            {ep.rows.map((row) => (
+              <tr key={row.route}>
+                <td><code>{row.route}</code></td>
+                <td>{row.purpose}</td>
+                <td>{row.status}</td>
+              </tr>
+            ))}
             <tr key="/"><td><code>/</code></td><td>Marketing hub + site map</td><td>Scaffold</td></tr>
             <tr key="/product"><td><code>/product</code></td><td>Personas, pricing hooks, integration story</td><td>Planned</td></tr>
             <tr key="/contracts"><td><code>/contracts</code></td><td>Soroban modules and interaction flows</td><td>Planned</td></tr>

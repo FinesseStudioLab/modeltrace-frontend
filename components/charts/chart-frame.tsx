@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import styles from "./charts.module.css";
 import type { ChartBaseProps, ChartState } from "./types";
+import { getMessages } from "@/lib/i18n";
 
 export interface LegendEntry {
   label: string;
@@ -22,12 +23,6 @@ interface ChartFrameProps extends ChartBaseProps {
   children: ReactNode;
 }
 
-const STATE_COPY: Record<Exclude<ChartState, "ready">, string> = {
-  loading: "Loading chart data…",
-  empty: "No data for this period.",
-  error: "Chart data could not be loaded.",
-};
-
 /**
  * The shell every chart renders inside.
  *
@@ -46,10 +41,20 @@ export function ChartFrame({
   errorMessage,
   legend,
   table,
-  tableLabel = "Show data table",
+  tableLabel,
   wide = false,
   children,
 }: ChartFrameProps) {
+  const m = getMessages();
+  const cf = m.chartFrame;
+
+  const stateCopy: Record<Exclude<ChartState, "ready">, string> = {
+    loading: cf.stateLoading,
+    empty: cf.stateEmpty,
+    error: cf.stateError,
+  };
+
+  const resolvedTableLabel = tableLabel ?? cf.tableLabel;
   const notReady = state !== "ready";
 
   return (
@@ -61,13 +66,13 @@ export function ChartFrame({
 
       {notReady ? (
         state === "loading" ? (
-          <div className={styles.skeleton} role="status" aria-label={STATE_COPY.loading} />
+          <div className={styles.skeleton} role="status" aria-label={stateCopy.loading} />
         ) : (
           <p
             className={`${styles.state} ${state === "error" ? styles.stateError : ""}`}
             role={state === "error" ? "alert" : undefined}
           >
-            {state === "error" ? (errorMessage ?? STATE_COPY.error) : STATE_COPY.empty}
+            {state === "error" ? (errorMessage ?? stateCopy.error) : stateCopy.empty}
           </p>
         )
       ) : (
@@ -103,7 +108,7 @@ export function ChartFrame({
 
           {table ? (
             <details className={styles.details}>
-              <summary>{tableLabel}</summary>
+              <summary>{resolvedTableLabel}</summary>
               <div className={styles.tableWrap}>{table}</div>
             </details>
           ) : null}

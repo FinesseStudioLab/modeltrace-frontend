@@ -1,0 +1,339 @@
+/*
+ * Styles scoped to the /docs subtree. Kept out of globals.css deliberately:
+ * these rules are only ever needed under the docs layout, and Next.js loads
+ * the sheet with that layout rather than on every route.
+ */
+
+.docs-shell {
+  display: grid;
+  grid-template-columns: 232px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+  padding: 24px 0 56px;
+}
+
+/* Sidebar ------------------------------------------------------------- */
+
+.docs-sidebar {
+  position: sticky;
+  top: 88px;
+  font-size: 0.9rem;
+}
+
+.docs-sidebar-heading {
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+.docs-sidebar ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.docs-sidebar a {
+  display: block;
+  padding: 7px 12px;
+  border-radius: 8px;
+  color: var(--muted);
+  border-left: 2px solid transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.docs-sidebar a:hover {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--text);
+}
+
+.docs-sidebar a[aria-current="page"] {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+/* Content ------------------------------------------------------------- */
+
+.docs-content {
+  min-width: 0;
+  padding-bottom: 8px;
+}
+
+.docs-content h1 {
+  font-size: clamp(1.7rem, 3.2vw, 2.3rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+}
+
+.docs-content h2 {
+  font-size: 1.24rem;
+  margin: 40px 0 12px;
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.docs-content h3 {
+  font-size: 1.02rem;
+  margin: 26px 0 8px;
+  font-weight: 650;
+}
+
+.docs-content p {
+  color: var(--muted);
+  max-width: 68ch;
+  margin: 0 0 14px;
+}
+
+.docs-lead {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  margin-bottom: 22px;
+}
+
+.docs-content ul,
+.docs-content ol {
+  color: var(--muted);
+  max-width: 68ch;
+  padding-left: 20px;
+  margin: 0 0 14px;
+}
+
+.docs-content li { margin-bottom: 7px; }
+
+.docs-content strong { color: var(--text); font-weight: 650; }
+
+/* Inline code and code blocks ----------------------------------------- */
+
+.docs-content code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.87em;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  color: color-mix(in srgb, var(--accent) 88%, white);
+}
+
+.docs-code {
+  margin: 0 0 18px;
+  padding: 15px 17px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 92%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+
+/* A <pre> inside .docs-code holds the literal source; the pill styling above
+   is for prose spans only, so it is stripped back here. */
+.docs-code code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text);
+  font-size: inherit;
+}
+
+/* Tables --------------------------------------------------------------- */
+
+.docs-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 20px;
+}
+
+.docs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.89rem;
+  min-width: 460px;
+}
+
+.docs-table th,
+.docs-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  vertical-align: top;
+}
+
+.docs-table th {
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.docs-table td { color: var(--muted); }
+.docs-table td:first-child { color: var(--text); }
+
+/* Status pills --------------------------------------------------------- */
+
+.docs-status {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.docs-status-implemented {
+  background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-2) 40%, transparent);
+  color: color-mix(in srgb, var(--accent-2) 78%, white);
+}
+
+.docs-status-specified {
+  background: color-mix(in srgb, var(--muted) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--muted) 38%, transparent);
+  color: color-mix(in srgb, var(--muted) 88%, white);
+}
+
+/* Callout -------------------------------------------------------------- */
+
+.docs-note {
+  margin: 0 0 20px;
+  padding: 14px 17px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.docs-note p { margin: 0; max-width: none; }
+
+.docs-note-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--accent) 85%, white);
+  margin-bottom: 5px;
+}
+
+/* Hub cards ------------------------------------------------------------ */
+
+.docs-index {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(248px, 1fr));
+  gap: 14px;
+  padding: 4px 0 8px;
+  list-style: none;
+  margin: 0 0 8px;
+}
+
+.docs-index li { margin: 0; }
+
+.docs-index a {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  height: 100%;
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--surface) 92%, var(--bg)) 0%,
+    var(--surface) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.docs-index a:hover {
+  border-color: color-mix(in srgb, var(--accent) 52%, transparent);
+  transform: translateY(-2px);
+}
+
+.docs-index-title {
+  font-weight: 650;
+  font-size: 1.02rem;
+}
+
+.docs-index-summary {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+/* Sequential navigation ------------------------------------------------ */
+
+.docs-next {
+  display: block;
+  margin-top: 44px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  background: color-mix(in srgb, var(--surface) 62%, transparent);
+  transition: border-color 0.15s ease;
+}
+
+.docs-next:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.docs-next-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.docs-next-title {
+  font-weight: 650;
+  color: var(--accent);
+}
+
+/* Narrow viewports ----------------------------------------------------- */
+
+@media (max-width: 860px) {
+  .docs-shell {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+  }
+
+  .docs-sidebar {
+    position: static;
+    top: auto;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+    padding-bottom: 18px;
+  }
+
+  .docs-sidebar ol {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .docs-sidebar a {
+    border-left: none;
+    border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+    padding: 6px 12px;
+  }
+
+  .docs-sidebar a[aria-current="page"] {
+    border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+}
+
+/* Users who ask for reduced motion get the colour feedback, not the lift. */
+@media (prefers-reduced-motion: reduce) {
+  .docs-index a,
+  .docs-index a:hover,
+  .docs-next {
+    transition: none;
+    transform: none;
+  }
+}

@@ -214,6 +214,21 @@ own budget, not a stand-in for Next's dashboard figure. CI runs it after
 4. Point **`NEXT_PUBLIC_BACKEND_URL`** at your deployed API
 5. Enable **preview deployments** for grant demo links
 
+### Preview deployments
+
+`.github/workflows/preview.yml` deploys a preview and comments the URL on every
+pull request. It needs three repository secrets:
+
+| Secret | Where to find it |
+| ------ | ---------------- |
+| `VERCEL_TOKEN` | Vercel account settings → Tokens |
+| `VERCEL_ORG_ID` | `.vercel/project.json` after `vercel link` |
+| `VERCEL_PROJECT_ID` | `.vercel/project.json` after `vercel link` |
+
+The workflow runs on `pull_request`, not `pull_request_target`, so a pull
+request from a fork cannot reach these secrets. Those runs skip the deploy and
+report a notice instead of failing.
+
 ---
 
 ## 🤝 Contributing

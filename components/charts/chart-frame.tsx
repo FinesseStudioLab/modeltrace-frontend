@@ -79,6 +79,8 @@ export function ChartFrame({
             // Wide plots scroll on narrow screens (520px legibility floor); a
             // scroll container without a tab stop fails axe's
             // scrollable-region-focusable and is unreachable by keyboard.
+            // axe scrollable-region-focusable: any overflow:auto region must be
+            // reachable by keyboard so users can scroll it without a mouse.
             tabIndex={wide ? 0 : undefined}
           >
             {children}

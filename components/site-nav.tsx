@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FreighterConnect } from "@/components/wallet/freighter-connect";
 import { navLinks } from "@/lib/site-map";
 
 /**
@@ -146,6 +147,7 @@ export function SiteNav() {
             );
           })}
         </nav>
+        <FreighterConnect />
       </div>
 
       {/* Mobile disclosure panel — visible only when open on small screens. */}

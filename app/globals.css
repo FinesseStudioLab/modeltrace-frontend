@@ -663,6 +663,97 @@ a { color: inherit; text-decoration: none; }
   border-color: color-mix(in srgb, var(--accent-2) 45%, transparent);
 }
 
+/* ── Wallet connect (issue #60) ──────────────────────────────────────────────
+ * States: checking / not-installed / disconnected / connecting / connected /
+ * wrong-network / error — see components/wallet/freighter-connect.tsx. */
+.wallet-connect {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.wallet-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  background: color-mix(in srgb, var(--surface) 88%, var(--bg));
+  color: var(--muted);
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  white-space: nowrap;
+}
+
+button.wallet-pill {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.wallet-pill-action {
+  border-color: var(--ring);
+  color: color-mix(in srgb, var(--accent) 85%, white);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.wallet-pill-action:hover {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.wallet-pill-connected {
+  border-color: color-mix(in srgb, var(--accent-2) 40%, transparent);
+  color: var(--text);
+}
+
+.wallet-pill-connected:hover {
+  border-color: color-mix(in srgb, var(--accent-2) 70%, transparent);
+}
+
+.wallet-address {
+  font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+.wallet-network-badge {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-2) 22%, transparent);
+  color: color-mix(in srgb, var(--accent-2) 90%, white);
+  font-size: var(--text-2xs);
+  line-height: var(--lh-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Wrong-network is the failure mode the issue calls out as expensive during a
+ * demo, so its badge deliberately breaks from the accent palette rather than
+ * blending in as "yet another pill". */
+.wallet-network-badge-wrong {
+  background: color-mix(in srgb, red 26%, transparent);
+  color: color-mix(in srgb, red 85%, white);
+}
+
+.wallet-pill-alert {
+  border-color: color-mix(in srgb, red 30%, transparent);
+  color: color-mix(in srgb, red 80%, white);
+}
+
+.wallet-retry {
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: var(--text-2xs);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+@media (max-width: 640px) {
+  .wallet-address { display: none; }
+}
+
 /* ── Accessibility utility ───────────────────────────────────────────────────
  * Hides content visually while keeping it announced by screen readers.
  * Used for the aria-live copy-confirmation region in Address / Hash. */

@@ -1,4 +1,5 @@
 :root {
+  /* ── Colour tokens ─────────────────────────────────────────────────────── */
   --bg: #070b14;
   --surface: #0f1727;
   --text: #eaf2ff;
@@ -6,15 +7,86 @@
   --accent: #59c2ff;
   --accent-2: #7cf9c4;
   --ring: color-mix(in srgb, #59c2ff 35%, transparent);
+
+  /* ── Typographic scale ──────────────────────────────────────────────────
+   *
+   * A nine-step modular scale.  Every token carries three companions:
+   *   --text-*   → font-size
+   *   --lh-*     → line-height (use with the matching size)
+   *   --fw-*     → default font-weight for that role
+   *
+   * Rules
+   * ─────
+   * 1. Body and UI text use fixed rem steps so rhythm never shifts mid-page.
+   * 2. Only display/hero sizes use clamp() — fluid body copy destabilises
+   *    the vertical grid at mid-breakpoints.
+   * 3. To constrain long-form content (compliance, docs) wrap in .prose or
+   *    apply max-width: var(--measure) directly.
+   *
+   * Step     rem       ≈ px   lh      fw    Where used
+   * ───────  ───────   ─────  ──────  ────  ──────────────────────────────
+   * 2xs      0.72rem   11.5   1.40    400   SVG axis ticks
+   * xs       0.78rem   12.5   1.45    400   Tags, captions, gauge captions
+   * sm       0.875rem  14     1.50    400   Legend, table rows, stats pills
+   * base     1rem      16     1.60    400   Primary body copy (set on body)
+   * md       1.0625rem 17     1.55    600   Brand name, lead paragraph
+   * lg       1.125rem  18     1.40    650   Card / pillar h3 headings
+   * xl       1.35rem   21.6   1.30    600   Pillar icon glyph, gauge value
+   * 2xl      1.6rem    25.6   1.25    700   Gauge numeric readout
+   * 3xl      clamp(…)  32–48  1.12    800   Hero / display headline
+   * ─────────────────────────────────────────────────────────────────────── */
+  --text-2xs: 0.72rem;
+  --lh-2xs:   1.4;
+  --fw-2xs:   400;
+
+  --text-xs: 0.78rem;
+  --lh-xs:   1.45;
+  --fw-xs:   400;
+
+  --text-sm: 0.875rem;
+  --lh-sm:   1.5;
+  --fw-sm:   400;
+
+  --text-base: 1rem;
+  --lh-base:   1.6;
+  --fw-base:   400;
+
+  --text-md: 1.0625rem;
+  --lh-md:   1.55;
+  --fw-md:   600;
+
+  --text-lg: 1.125rem;
+  --lh-lg:   1.4;
+  --fw-lg:   650;
+
+  --text-xl: 1.35rem;
+  --lh-xl:   1.3;
+  --fw-xl:   600;
+
+  --text-2xl: 1.6rem;
+  --lh-2xl:   1.25;
+  --fw-2xl:   700;
+
+  --text-3xl: clamp(2rem, 4vw, 3rem);
+  --lh-3xl:   1.12;
+  --fw-3xl:   800;
+
+  /* ── Prose measure ──────────────────────────────────────────────────────
+   * ~65-character line length — comfortable for compliance and docs pages.
+   * Usage: add class="prose" to any long-form content wrapper. */
+  --measure: 65ch;
 }
 
 * { box-sizing: border-box; }
 
+html { overflow-x: hidden; }
+
 body {
   margin: 0;
+  overflow-x: hidden;
   background: radial-gradient(circle at 20% 0%, color-mix(in srgb, #59c2ff 18%, #070b14) 0%, var(--bg) 42%);
   color: var(--text);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   line-height: 1.6;
 }
 
@@ -52,7 +124,129 @@ a { color: inherit; text-decoration: none; }
   flex-wrap: wrap;
   gap: 14px;
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: var(--text-sm);
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Current-route indicator — visible on both desktop and mobile. */
+.nav-link-current {
+  color: var(--accent);
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-link-current::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+/* Mobile toggle button — hidden on desktop, shown below breakpoint. */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 8px 6px;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.nav-toggle-bar {
+  display: block;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--text);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Mobile disclosure panel — shown only when open, below breakpoint. */
+.nav-mobile-panel {
+  display: none;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  background: color-mix(in srgb, var(--surface) 95%, var(--bg));
+  padding: 8px 0 14px;
+}
+
+.nav-mobile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-mobile-link {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.nav-mobile-link:hover,
+.nav-mobile-link:focus-visible {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--text);
+  outline: none;
+}
+
+.nav-mobile-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* Mobile styles — apply below 768px. */
+@media (max-width: 767px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  /* Keep the desktop link row visible and wrapping on small screens so the
+   * route links remain reachable without first opening the disclosure menu.
+   * The mobile panel is still available as an alternate navigation path. */
+  .links {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding-top: 8px;
+  }
+
+  .nav-mobile-panel {
+    display: block;
+  }
 }
 
 .hero {
@@ -60,7 +254,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: var(--text-3xl);
+  line-height: var(--lh-3xl);
   margin: 0 0 12px;
 }
 
@@ -104,7 +299,8 @@ a { color: inherit; text-decoration: none; }
   background: color-mix(in srgb, var(--accent) 14%, transparent);
   border: 1px solid var(--ring);
   color: color-mix(in srgb, var(--accent) 85%, white);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
   margin-bottom: 10px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -128,7 +324,7 @@ a { color: inherit; text-decoration: none; }
 .site-map table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.92rem;
+  font-size: var(--text-sm);
 }
 
 .site-map th, .site-map td {
@@ -166,21 +362,21 @@ a { color: inherit; text-decoration: none; }
   font-weight: 700;
   letter-spacing: 0.02em;
 }
-.brand-text { font-size: 1.05rem; }
+.brand-text { font-size: var(--text-md); font-weight: var(--fw-md); }
 
 .hero-headline {
-  font-size: clamp(2.15rem, 4.5vw, 3.15rem);
-  line-height: 1.12;
+  font-size: var(--text-3xl);
+  line-height: var(--lh-3xl);
   margin: 0 0 14px;
-  font-weight: 800;
+  font-weight: var(--fw-3xl);
   letter-spacing: -0.03em;
 }
 .landing-lead {
-  font-size: 1.07rem;
+  font-size: var(--text-md);
+  line-height: var(--lh-md);
   max-width: 560px;
   margin: 0 0 26px;
   color: var(--muted);
-  line-height: 1.65;
 }
 .landing-cta-row {
   display: flex;
@@ -210,7 +406,8 @@ a { color: inherit; text-decoration: none; }
   list-style: none;
   padding: 0;
   margin: 0;
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
   color: var(--muted);
 }
 .landing-stats li {
@@ -264,26 +461,28 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
 }
 .landing-pillar-icon {
-  font-size: 1.35rem;
+  font-size: var(--text-xl);
   margin-bottom: 10px;
   opacity: 0.95;
 }
 .landing-pillar h3 {
   margin: 0 0 8px;
-  font-size: 1.08rem;
-  font-weight: 650;
+  font-size: var(--text-lg);
+  line-height: var(--lh-lg);
+  font-weight: var(--fw-lg);
 }
 .landing-pillar p {
   margin: 0;
   color: var(--muted);
-  font-size: 0.93rem;
-  line-height: 1.55;
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
 }
 .landing-trust {
   text-align: center;
   padding: 20px 22px;
   margin-bottom: 36px;
-  font-size: 0.88rem;
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
   color: var(--muted);
   border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
   border-radius: 14px;
@@ -393,4 +592,96 @@ a { color: inherit; text-decoration: none; }
   .nav {
     position: static;
   }
+}
+/* ── Address / Hash primitives ───────────────────────────────────────────────
+ *
+ * Used by <Address> and <Hash> in components/address-hash.tsx.
+ * Monospace + tabular figures keep columns of on-chain values aligned.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+.addr-root {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  /* prevents line-break mid-string inside a table cell or flex row */
+  white-space: nowrap;
+}
+
+.addr-code {
+  font-family: ui-monospace, "Cascadia Code", "JetBrains Mono",
+               "Fira Code", Consolas, "Courier New", monospace;
+  font-size: var(--text-sm);
+  line-height: var(--lh-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.addr-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  text-underline-offset: 2px;
+  transition: text-decoration-color 0.12s ease;
+}
+
+.addr-link:hover {
+  text-decoration-color: var(--accent);
+}
+
+.addr-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--muted) 30%, transparent);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+  flex-shrink: 0;
+}
+
+.addr-copy:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.addr-copy:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.addr-copy[data-copied="true"] {
+  color: var(--accent-2);
+  border-color: color-mix(in srgb, var(--accent-2) 45%, transparent);
+}
+
+/* ── Accessibility utility ───────────────────────────────────────────────────
+ * Hides content visually while keeping it announced by screen readers.
+ * Used for the aria-live copy-confirmation region in Address / Hash. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Prose utility ──────────────────────────────────────────────────────────
+ * Apply to any long-form content wrapper (compliance, docs, etc.).
+ * Sets a comfortable measure and the base reading line-height. */
+.prose {
+  max-width: var(--measure);
+  line-height: var(--lh-base);
 }

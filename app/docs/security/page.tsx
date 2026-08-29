@@ -28,7 +28,7 @@ export default function SecurityPage() {
           Two very different kinds of chain write pass through the API, and giving
           them the same key is what creates the problem:
         </p>
-        <div className="docs-table-wrap">
+        <div className="docs-table-wrap" tabIndex={0} role="region" aria-label="Attestation compared with settlement">
           <table className="docs-table">
             <thead>
               <tr>
@@ -83,7 +83,7 @@ export default function SecurityPage() {
           It is the only way to reach a signature, and it exposes signing — never
           key material, so no call site can log or forward a key.
         </p>
-        <div className="docs-table-wrap">
+        <div className="docs-table-wrap" tabIndex={0} role="region" aria-label="Signing provider modes">
           <table className="docs-table">
             <thead>
               <tr>

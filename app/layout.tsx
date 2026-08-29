@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Image from "next/image";
-import Link from "next/link";
 import { resolveSiteUrl } from "@/lib/site-url";
+import { SiteNav } from "@/components/site-nav";
 import "./globals.css";
 
 const siteUrl = resolveSiteUrl();
@@ -43,41 +42,11 @@ export const metadata: Metadata = {
   },
 };
 
-const nav = [
-  ["Product", "/product"],
-  ["Contracts", "/contracts"],
-  ["Operators", "/operators"],
-  ["Explore", "/explore"],
-  ["Compliance", "/compliance"],
-  ["Roadmap", "/roadmap"],
-  ["Contributors", "/contributors"],
-  ["Docs", "/docs"],
-] as const;
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.variable}>
-        <header className="nav">
-          <div className="container nav-inner">
-            <Link href="/" className="brand brand-with-logo">
-              <Image
-                src="/icon.svg"
-                alt=""
-                width={38}
-                height={38}
-                className="nav-logo"
-                unoptimized
-              />
-              <span className="brand-text">ModelTrace</span>
-            </Link>
-            <nav className="links">
-              {nav.map(([label, href]) => (
-                <Link key={href} href={href}>{label}</Link>
-              ))}
-            </nav>
-          </div>
-        </header>
+        <SiteNav />
         <main className="container">{children}</main>
       </body>
     </html>

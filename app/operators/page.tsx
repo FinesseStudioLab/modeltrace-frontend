@@ -16,7 +16,7 @@ export default function Page() {
   return (
     <section className="section">
       <span className="tag">Operators</span>
-      <h2>Operator dashboard</h2>
+      <h1>Operator dashboard</h1>
       <p style={{ color: "var(--muted)", maxWidth: "62ch", marginBottom: 24 }}>
         Attestation volume, usage by model, and quota headroom. Data is sourced directly from the testnet settlement layer.
       </p>

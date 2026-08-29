@@ -54,13 +54,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to main content
         </a>
         <SiteNav />
-        <main className="container">{children}</main>
-        <SiteFooter />
-        <AnalyticsScript />
-        <WebVitalsReporter />
         <main className="container" id="main" tabIndex={-1}>
           {children}
         </main>
+        <SiteFooter />
+        <AnalyticsScript />
+        <WebVitalsReporter />
       </body>
     </html>
   );

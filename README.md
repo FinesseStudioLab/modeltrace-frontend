@@ -171,6 +171,7 @@ Never put private keys or RPC URLs here.
 | `NEXT_PUBLIC_STELLAR_NETWORK` | `testnet` / `public` | Which network label the UI shows. |
 | `NEXT_PUBLIC_APP_URL` | `https://…` | Canonical URL for OG tags / redirects. |
 | `NEXT_PUBLIC_BACKEND_URL` | `http://localhost:8080` | Browser-safe pointer to API when calling from client. |
+| `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | `modeltrace.example` | Enables cookieless analytics (Plausible) and Web Vitals reporting. Unset = both are no-ops. |
 
 ---
 
@@ -187,9 +188,21 @@ Never put private keys or RPC URLs here.
 ```bash
 npm run lint
 npm run build
+npm test
+npm run size
 ```
 
 Fix all ESLint + TypeScript errors before merging.
+
+### Performance budget
+
+`npm run size` ([size-limit](https://github.com/ai/size-limit)) checks the gzipped
+weight of every cross-route JS chunk (`.next/static/chunks/*.js`) against the
+budget in `.size-limit.json`, currently 300 KB. This is a coarser number than
+the per-page "First Load JS" `next build` prints — it sums every shared chunk
+rather than de-duplicating per page — so treat it as its own metric with its
+own budget, not a stand-in for Next's dashboard figure. CI runs it after
+`npm run build` on every PR and fails the build on a regression past budget.
 
 ---
 

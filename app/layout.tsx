@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { AnalyticsScript } from "@/components/analytics/analytics-script";
+import { WebVitalsReporter } from "@/components/analytics/web-vitals-reporter";
+import { SiteFooter } from "@/components/site-footer";
 import { resolveSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
@@ -79,6 +82,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </header>
         <main className="container">{children}</main>
+        <SiteFooter />
+        <AnalyticsScript />
+        <WebVitalsReporter />
       </body>
     </html>
   );

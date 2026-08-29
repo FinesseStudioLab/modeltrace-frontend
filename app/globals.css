@@ -462,3 +462,56 @@ a { color: inherit; text-decoration: none; }
   max-width: var(--measure);
   line-height: var(--lh-base);
 }
+
+/* ── Footer (issue #67) ──────────────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  margin-top: 40px;
+  padding: 20px 0 32px;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.site-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.site-footer-link {
+  color: color-mix(in srgb, var(--accent) 85%, white);
+}
+
+.site-footer-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Quickstart (issue #67) ──────────────────────────────────────────────── */
+.quickstart {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.quickstart h3 {
+  margin: 0 0 12px;
+}
+
+.quickstart-steps {
+  color: var(--muted);
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.quickstart-steps code {
+  background: color-mix(in srgb, var(--surface) 80%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: var(--text-xs);
+}

@@ -4,8 +4,9 @@ export function ExpectedPages() {
       <span className="tag">Site map</span>
       <h2>Expected pages (delivery backlog)</h2>
       <p style={{ color: "var(--muted)", maxWidth: 720 }}>
-        This table is the contract between product and engineering. Routes marked scaffold ship as
-        placeholders; planned routes are tracked for sprint planning.
+        This table is the contract between product and engineering. Shipped routes carry real
+        content; routes marked scaffold ship as placeholders; planned routes are tracked for
+        sprint planning.
       </p>
       <div style={{ overflowX: "auto", marginTop: 16 }}>
         <table>
@@ -24,7 +25,7 @@ export function ExpectedPages() {
             <tr key="/compliance"><td><code>/compliance</code></td><td>Audit exports and policy packs</td><td>Planned</td></tr>
             <tr key="/roadmap"><td><code>/roadmap</code></td><td>Milestones vs grants</td><td>Scaffold</td></tr>
             <tr key="/contributors"><td><code>/contributors</code></td><td>Good first issues and guild roles</td><td>Planned</td></tr>
-            <tr key="/docs"><td><code>/docs</code></td><td>Technical reference hub</td><td>Scaffold</td></tr>
+            <tr key="/docs"><td><code>/docs</code></td><td>Technical reference hub</td><td>Shipped</td></tr>
           </tbody>
         </table>
       </div>

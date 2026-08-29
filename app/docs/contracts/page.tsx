@@ -33,7 +33,7 @@ export default function ContractsPage() {
         </div>
 
         <h2>Division of responsibility</h2>
-        <div className="docs-table-wrap">
+        <div className="docs-table-wrap" tabIndex={0} role="region" aria-label="Division of responsibility">
           <table className="docs-table">
             <thead>
               <tr>

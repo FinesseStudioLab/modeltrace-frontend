@@ -40,7 +40,7 @@ export default function ApiPage() {
           accepting connections; it does not check downstream dependencies, so a
           healthy response does not imply Soroban RPC is reachable.
         </p>
-        <pre className="docs-code">
+        <pre className="docs-code" tabIndex={0}>
           <code>{`$ curl http://localhost:8080/health
 
 {
@@ -56,7 +56,7 @@ export default function ApiPage() {
           confirming which build an environment is running before you debug
           further up the stack.
         </p>
-        <pre className="docs-code">
+        <pre className="docs-code" tabIndex={0}>
           <code>{`$ curl http://localhost:8080/api/v1/meta
 
 {

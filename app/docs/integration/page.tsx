@@ -27,13 +27,13 @@ export default function IntegrationPage() {
 
         <h2>Web app only</h2>
         <p>Node.js 20 or newer.</p>
-        <pre className="docs-code">
+        <pre className="docs-code" tabIndex={0}>
           <code>{`npm ci
 npm run dev     # http://localhost:3000`}</code>
         </pre>
 
         <h2>Web app with the API</h2>
-        <pre className="docs-code">
+        <pre className="docs-code" tabIndex={0}>
           <code>{`# terminal A — API
 cd ../modeltrace-backend
 npm ci
@@ -59,7 +59,7 @@ npm run dev     # http://localhost:3000`}</code>
             documented in advance so nobody invents a second convention.
           </p>
         </div>
-        <div className="docs-table-wrap">
+        <div className="docs-table-wrap" tabIndex={0} role="region" aria-label="Environment variables">
           <table className="docs-table">
             <thead>
               <tr>
@@ -107,7 +107,7 @@ npm run dev     # http://localhost:3000`}</code>
           CI runs exactly these five commands on every pull request, so running
           them locally reproduces it:
         </p>
-        <pre className="docs-code">
+        <pre className="docs-code" tabIndex={0}>
           <code>{`npm run lint        # eslint
 npx tsc --noEmit    # typecheck
 npm test            # unit tests

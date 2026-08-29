@@ -150,6 +150,16 @@
   margin: 0 0 20px;
 }
 
+/* These scroll horizontally on narrow viewports, which makes them scrollable
+   regions: axe requires them to be keyboard-reachable, so they carry
+   tabIndex={0} and need a visible ring when focused. */
+.docs-table-wrap:focus-visible,
+.docs-code:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
 .docs-table {
   width: 100%;
   border-collapse: collapse;

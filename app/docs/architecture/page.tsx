@@ -23,7 +23,7 @@ export default function ArchitecturePage() {
         </p>
 
         <h2>Components</h2>
-        <div className="docs-table-wrap">
+        <div className="docs-table-wrap" tabIndex={0} role="region" aria-label="Components">
           <table className="docs-table">
             <thead>
               <tr>
@@ -57,7 +57,7 @@ export default function ArchitecturePage() {
           An inference gateway meters usage and reports it. The path that report
           takes is deliberately asymmetric with the path that money takes:
         </p>
-        <pre className="docs-code">
+        <pre className="docs-code" tabIndex={0}>
           <code>{`gateway ──POST usage──▶ modeltrace-api ──attestation──▶ audit-registry
                             │                          (signed by a scoped
                             │                           service key)
@@ -86,7 +86,7 @@ export default function ArchitecturePage() {
         </p>
 
         <h2>Repository layout</h2>
-        <div className="docs-table-wrap">
+        <div className="docs-table-wrap" tabIndex={0} role="region" aria-label="Repository layout">
           <table className="docs-table">
             <thead>
               <tr>

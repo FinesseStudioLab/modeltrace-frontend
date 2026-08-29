@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Image from "next/image";
+import { FreighterConnect } from "@/components/wallet/freighter-connect";
 import Link from "next/link";
 import { resolveSiteUrl } from "@/lib/site-url";
 import "./globals.css";
@@ -76,6 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link key={href} href={href}>{label}</Link>
               ))}
             </nav>
+            <FreighterConnect />
           </div>
         </header>
         <main className="container">{children}</main>

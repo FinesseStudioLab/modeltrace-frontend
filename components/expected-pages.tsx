@@ -21,6 +21,7 @@ export function ExpectedPages() {
             <tr key="/product"><td><code>/product</code></td><td>Personas, pricing hooks, integration story</td><td>Planned</td></tr>
             <tr key="/contracts"><td><code>/contracts</code></td><td>Soroban modules and interaction flows</td><td>Planned</td></tr>
             <tr key="/operators"><td><code>/operators</code></td><td>Dashboard preview for AI gateways</td><td>Planned</td></tr>
+            <tr key="/explore"><td><code>/explore</code></td><td>Public attestation lookup and independent verification</td><td>Shipped</td></tr>
             <tr key="/compliance"><td><code>/compliance</code></td><td>Audit exports and policy packs</td><td>Planned</td></tr>
             <tr key="/roadmap"><td><code>/roadmap</code></td><td>Milestones vs grants</td><td>Scaffold</td></tr>
             <tr key="/contributors"><td><code>/contributors</code></td><td>Good first issues and guild roles</td><td>Planned</td></tr>

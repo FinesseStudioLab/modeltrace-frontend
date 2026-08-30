@@ -1,20 +1,25 @@
 import type { Metadata } from "next";
 import { ExploreClient } from "./ExploreClient";
+import { getMessages } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-  title: "Explore",
-  description: "Look up and independently verify an inference attestation.",
-};
+export function generateMetadata(): Metadata {
+  const m = getMessages();
+  return {
+    title: m.explorePage.metaTitle,
+    description: m.explorePage.metaDescription,
+  };
+}
 
 export default function Page() {
+  const m = getMessages();
+  const ep = m.explorePage;
+
   return (
     <section className="section">
-      <span className="tag">Explore</span>
-      <h2>Verify an attestation</h2>
+      <span className="tag">{ep.tag}</span>
+      <h2>{ep.heading}</h2>
       <p style={{ color: "var(--muted)", maxWidth: 640 }}>
-        Look up any recorded attestation by its id, transaction hash, or payload hash — no
-        account needed. Every result links back to the underlying transaction and contract so you
-        can confirm it independently, without trusting us.
+        {ep.lead}
       </p>
       <ExploreClient />
     </section>

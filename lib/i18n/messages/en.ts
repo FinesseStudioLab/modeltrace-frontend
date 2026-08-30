@@ -18,6 +18,7 @@ export const nav = {
   product: "Product",
   contracts: "Contracts",
   operators: "Operators",
+  explore: "Explore",
   compliance: "Compliance",
   roadmap: "Roadmap",
   contributors: "Contributors",
@@ -173,6 +174,7 @@ export const expectedPages = {
     { route: "/product", purpose: "Personas, pricing hooks, integration story", status: "Planned" },
     { route: "/contracts", purpose: "Soroban modules and interaction flows", status: "Planned" },
     { route: "/operators", purpose: "Dashboard preview for AI gateways", status: "Planned" },
+    { route: "/explore", purpose: "Public attestation lookup and independent verification", status: "Shipped" },
     { route: "/compliance", purpose: "Audit exports and policy packs", status: "Planned" },
     { route: "/roadmap", purpose: "Milestones vs grants", status: "Scaffold" },
     { route: "/contributors", purpose: "Good first issues and guild roles", status: "Planned" },
@@ -278,7 +280,17 @@ export const compliancePage = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Scaffold pages (contracts, roadmap, contributors, docs)
+// Explore page
+// ---------------------------------------------------------------------------
+export const explorePage = {
+  tag: "Explore",
+  metaTitle: "Explore",
+  metaDescription: "Look up and independently verify an inference attestation.",
+  heading: "Verify an attestation",
+  lead: "Look up any recorded attestation by its id, transaction hash, or payload hash \u2014 no account needed. Every result links back to the underlying transaction and contract so you can confirm it independently, without trusting us.",
+} as const;
+
+// ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 export const scaffoldPages = {
   scaffoldNotice:

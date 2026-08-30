@@ -44,17 +44,6 @@ export const metadata: Metadata = {
   },
 };
 
-const nav = [
-  ["Product", "/product"],
-  ["Contracts", "/contracts"],
-  ["Operators", "/operators"],
-  ["Explore", "/explore"],
-  ["Compliance", "/compliance"],
-  ["Roadmap", "/roadmap"],
-  ["Contributors", "/contributors"],
-  ["Docs", "/docs"],
-] as const;
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = resolveLocale();
   const { dir } = LOCALE_META[locale];
@@ -64,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     [m.nav.product, "/product"],
     [m.nav.contracts, "/contracts"],
     [m.nav.operators, "/operators"],
+    [m.nav.explore, "/explore"],
     [m.nav.compliance, "/compliance"],
     [m.nav.roadmap, "/roadmap"],
     [m.nav.contributors, "/contributors"],

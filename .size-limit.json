@@ -4,5 +4,38 @@
     "path": [".next/static/chunks/*.js"],
     "limit": "300 KB",
     "gzip": true
+  },
+  {
+    "name": "Framework + shared runtime (gzip)",
+    "path": [
+      ".next/static/chunks/framework-*.js",
+      ".next/static/chunks/main-*.js",
+      ".next/static/chunks/webpack-*.js"
+    ],
+    "limit": "115 KB",
+    "gzip": true
+  },
+  {
+    "name": "Marketing route chunks (gzip)",
+    "path": [
+      ".next/static/chunks/app/page-*.js",
+      ".next/static/chunks/app/product/**/*.js",
+      ".next/static/chunks/app/roadmap/**/*.js",
+      ".next/static/chunks/app/contributors/**/*.js"
+    ],
+    "limit": "8 KB",
+    "gzip": true
+  },
+  {
+    "name": "Docs route chunks (gzip)",
+    "path": [".next/static/chunks/app/docs/**/*.js"],
+    "limit": "10 KB",
+    "gzip": true
+  },
+  {
+    "name": "Explore route chunks (gzip)",
+    "path": [".next/static/chunks/app/explore/**/*.js"],
+    "limit": "12 KB",
+    "gzip": true
   }
 ]

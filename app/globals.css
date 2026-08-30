@@ -129,6 +129,126 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
 }
 
+/* Current-route indicator — visible on both desktop and mobile. */
+.nav-link-current {
+  color: var(--accent);
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-link-current::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+/* Mobile toggle button — hidden on desktop, shown below breakpoint. */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 8px 6px;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.nav-toggle-bar {
+  display: block;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--text);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Mobile disclosure panel — shown only when open, below breakpoint. */
+.nav-mobile-panel {
+  display: none;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  background: color-mix(in srgb, var(--surface) 95%, var(--bg));
+  padding: 8px 0 14px;
+}
+
+.nav-mobile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-mobile-link {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.nav-mobile-link:hover,
+.nav-mobile-link:focus-visible {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--text);
+  outline: none;
+}
+
+.nav-mobile-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* Mobile styles — apply below 768px. */
+@media (max-width: 767px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  /* Keep the desktop link row visible and wrapping on small screens so the
+   * route links remain reachable without first opening the disclosure menu.
+   * The mobile panel is still available as an alternate navigation path. */
+  .links {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding-top: 8px;
+  }
+
+  .nav-mobile-panel {
+    display: block;
+  }
+}
+
 .hero {
   padding: 56px 0 28px;
 }
@@ -665,6 +785,97 @@ a { color: inherit; text-decoration: none; }
   border-color: color-mix(in srgb, var(--accent-2) 45%, transparent);
 }
 
+/* ── Wallet connect (issue #60) ──────────────────────────────────────────────
+ * States: checking / not-installed / disconnected / connecting / connected /
+ * wrong-network / error — see components/wallet/freighter-connect.tsx. */
+.wallet-connect {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.wallet-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  background: color-mix(in srgb, var(--surface) 88%, var(--bg));
+  color: var(--muted);
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  white-space: nowrap;
+}
+
+button.wallet-pill {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.wallet-pill-action {
+  border-color: var(--ring);
+  color: color-mix(in srgb, var(--accent) 85%, white);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.wallet-pill-action:hover {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.wallet-pill-connected {
+  border-color: color-mix(in srgb, var(--accent-2) 40%, transparent);
+  color: var(--text);
+}
+
+.wallet-pill-connected:hover {
+  border-color: color-mix(in srgb, var(--accent-2) 70%, transparent);
+}
+
+.wallet-address {
+  font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+.wallet-network-badge {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-2) 22%, transparent);
+  color: color-mix(in srgb, var(--accent-2) 90%, white);
+  font-size: var(--text-2xs);
+  line-height: var(--lh-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Wrong-network is the failure mode the issue calls out as expensive during a
+ * demo, so its badge deliberately breaks from the accent palette rather than
+ * blending in as "yet another pill". */
+.wallet-network-badge-wrong {
+  background: color-mix(in srgb, red 26%, transparent);
+  color: color-mix(in srgb, red 85%, white);
+}
+
+.wallet-pill-alert {
+  border-color: color-mix(in srgb, red 30%, transparent);
+  color: color-mix(in srgb, red 80%, white);
+}
+
+.wallet-retry {
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: var(--text-2xs);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+@media (max-width: 640px) {
+  .wallet-address { display: none; }
+}
+
 /* ── Accessibility utility ───────────────────────────────────────────────────
  * Hides content visually while keeping it announced by screen readers.
  * Used for the aria-live copy-confirmation region in Address / Hash. */
@@ -686,4 +897,57 @@ a { color: inherit; text-decoration: none; }
 .prose {
   max-width: var(--measure);
   line-height: var(--lh-base);
+}
+
+/* ── Footer (issue #67) ──────────────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  margin-top: 40px;
+  padding: 20px 0 32px;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.site-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.site-footer-link {
+  color: color-mix(in srgb, var(--accent) 85%, white);
+}
+
+.site-footer-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Quickstart (issue #67) ──────────────────────────────────────────────── */
+.quickstart {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.quickstart h3 {
+  margin: 0 0 12px;
+}
+
+.quickstart-steps {
+  color: var(--muted);
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.quickstart-steps code {
+  background: color-mix(in srgb, var(--surface) 80%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: var(--text-xs);
 }

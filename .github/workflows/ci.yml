@@ -33,6 +33,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Runs against the build just produced above, so a regression is a
+      # regression in exactly what would have shipped, not a separate
+      # size-only build with a different config.
+      - name: Performance budget (bundle size)
+        run: npm run size
+
   e2e:
     name: End-to-end and accessibility
     runs-on: ubuntu-latest

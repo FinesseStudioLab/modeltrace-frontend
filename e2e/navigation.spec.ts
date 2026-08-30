@@ -15,8 +15,19 @@ const ROUTES = [
   "/docs",
 ] as const;
 
+/** Shipped routes reached from inside a page rather than from the header. */
+const NESTED_ROUTES = [
+  "/docs/architecture",
+  "/docs/contracts",
+  "/docs/api",
+  "/docs/integration",
+  "/docs/security",
+] as const;
+
+const ALL_ROUTES = [...ROUTES, ...NESTED_ROUTES] as const;
+
 test.describe("navigation", () => {
-  for (const route of ROUTES) {
+  for (const route of ALL_ROUTES) {
     test(`${route} renders with a heading and the site nav`, async ({ page }) => {
       const response = await page.goto(route);
       expect(response?.status()).toBe(200);
@@ -65,7 +76,7 @@ test.describe("responsive layout", () => {
     // visible one on a desktop-sized CI runner, so it is asserted directly.
     await page.setViewportSize({ width: 375, height: 812 });
 
-    for (const route of ROUTES) {
+    for (const route of ALL_ROUTES) {
       await page.goto(route);
       const overflow = await page.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,

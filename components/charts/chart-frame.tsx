@@ -76,6 +76,8 @@ export function ChartFrame({
             className={wide ? `${styles.plot} ${styles.plotWide}` : styles.plot}
             role="img"
             aria-label={summary}
+            // axe scrollable-region-focusable: any overflow:auto region must be
+            // reachable by keyboard so users can scroll it without a mouse.
             tabIndex={wide ? 0 : undefined}
           >
             {children}

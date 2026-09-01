@@ -171,6 +171,7 @@ Never put private keys or RPC URLs here.
 | `NEXT_PUBLIC_STELLAR_NETWORK` | `testnet` / `public` | Which network label the UI shows. |
 | `NEXT_PUBLIC_APP_URL` | `https://…` | Canonical URL for OG tags / redirects. |
 | `NEXT_PUBLIC_BACKEND_URL` | `http://localhost:8080` | Browser-safe pointer to API when calling from client. |
+| `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | `modeltrace.example` | Enables cookieless analytics (Plausible) and Web Vitals reporting. Unset = both are no-ops. |
 
 ---
 
@@ -187,9 +188,21 @@ Never put private keys or RPC URLs here.
 ```bash
 npm run lint
 npm run build
+npm test
+npm run size
 ```
 
 Fix all ESLint + TypeScript errors before merging.
+
+### Performance budget
+
+`npm run size` ([size-limit](https://github.com/ai/size-limit)) checks the gzipped
+weight of every cross-route JS chunk (`.next/static/chunks/*.js`) against the
+budget in `.size-limit.json`, currently 300 KB. This is a coarser number than
+the per-page "First Load JS" `next build` prints — it sums every shared chunk
+rather than de-duplicating per page — so treat it as its own metric with its
+own budget, not a stand-in for Next's dashboard figure. CI runs it after
+`npm run build` on every PR and fails the build on a regression past budget.
 
 ---
 
@@ -200,6 +213,33 @@ Fix all ESLint + TypeScript errors before merging.
 3. Configure **`NEXT_PUBLIC_*`** env vars per environment
 4. Point **`NEXT_PUBLIC_BACKEND_URL`** at your deployed API
 5. Enable **preview deployments** for grant demo links
+
+### Preview deployments
+
+`.github/workflows/preview.yml` deploys a preview and comments the URL on every
+pull request. It needs four repository secrets:
+
+| Secret | Where to find it |
+| ------ | ---------------- |
+| `VERCEL_TOKEN` | Vercel account settings → Tokens |
+| `VERCEL_ORG_ID` | `.vercel/project.json` after `vercel link` |
+| `VERCEL_PROJECT_ID` | `.vercel/project.json` after `vercel link` |
+| `STAGING_BACKEND_URL` | Your staging API origin — previews are pinned to it |
+
+The workflow runs on `pull_request`, not `pull_request_target`, so a pull
+request from a fork cannot reach these secrets. Those runs skip the deploy and
+report a notice instead of failing.
+
+Previews build with `NEXT_PUBLIC_DEPLOY_ENV=preview`, which pins them to
+testnet, shows a preview badge, and serves `Disallow: /` plus an
+`X-Robots-Tag: noindex` header so they cannot compete with production in
+search. `lib/deploy-env.ts` re-checks those targets during the build and fails
+it if a preview is configured to reach production, rather than trusting the
+workflow to have set every variable correctly.
+
+Lighthouse runs against the deployed preview and posts its scores to the pull
+request. `.github/workflows/preview-cleanup.yml` removes a pull request's
+deployments when it is merged or closed, so previews do not accumulate.
 
 ---
 

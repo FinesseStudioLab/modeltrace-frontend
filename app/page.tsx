@@ -28,7 +28,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="landing-pillars">
+      <section className="landing-pillars" aria-labelledby="pillars-heading">
+        <h2 className="visually-hidden" id="pillars-heading">
+          What ModelTrace provides
+        </h2>
         <article className="landing-pillar">
           <div className="landing-pillar-icon" aria-hidden>◆</div>
           <h3>Attestation rail</h3>

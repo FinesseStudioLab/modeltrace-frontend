@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { AnalyticsScript } from "@/components/analytics/analytics-script";
+import { WebVitalsReporter } from "@/components/analytics/web-vitals-reporter";
+import { SiteFooter } from "@/components/site-footer";
 import { resolveSiteUrl } from "@/lib/site-url";
 import { SiteNav } from "@/components/site-nav";
+import { PreviewBadge } from "@/components/preview-badge";
+import { assertPreviewTargetsAreSafe } from "@/lib/deploy-env";
 import "./globals.css";
+import "./a11y.css";
+
+// Fails the build when a preview is configured to reach production, rather
+// than deploying something that quietly points at mainnet.
+assertPreviewTargetsAreSafe();
 
 const siteUrl = resolveSiteUrl();
 const inter = Inter({
@@ -57,8 +67,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.variable}>
+        <PreviewBadge />
+        <a className="skip-link" href="#main">
+          Skip to main content
+        </a>
         <SiteNav />
-        <main className="container">{children}</main>
+        <main className="container" id="main" tabIndex={-1}>
+          {children}
+        </main>
+        <SiteFooter />
+        <AnalyticsScript />
+        <WebVitalsReporter />
       </body>
     </html>
   );

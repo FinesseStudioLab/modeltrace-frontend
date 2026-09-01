@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import "./globals.css";
+import { captureError } from "@/lib/observability/report";
 
 export default function GlobalError({
   error,
@@ -11,8 +12,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
-    console.error("GlobalError caught:", error);
+    captureError(error, { boundary: "app/global-error", digest: error.digest });
   }, [error]);
 
   return (

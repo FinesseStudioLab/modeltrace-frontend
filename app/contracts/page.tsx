@@ -16,6 +16,7 @@ export default function ContractsPage() {
       <p style={{ color: "var(--muted)" }}>
         Scaffold page — replace with production content, data loaders, and analytics.
       <h2>Soroban contracts</h2>
+      <h1>Soroban contracts</h1>
       <p style={{ color: "var(--muted)", maxWidth: 640, marginTop: 0 }}>
         On-chain modules that power ModelTrace settlement, attestation, and
         escrow. Production addresses and interaction flows ship with the

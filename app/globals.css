@@ -898,6 +898,116 @@ a { color: inherit; text-decoration: none; }
   margin-top: 48px;
   padding-top: 24px;
   border-top: 1px solid color-mix(in srgb, var(--muted) 18%, transparent);
+/* === Responsive breakpoints ==========================================
+ *
+ * Until now this sheet had no media queries at all: every layout relied on
+ * flex-wrap, auto-fit grids, and clamp(). That degrades rather than adapts —
+ * it stops things overflowing but leaves the header cramped and the hero
+ * oversized on small screens.
+ *
+ * Two breakpoints, chosen from where the layouts actually break rather than
+ * from device names:
+ *   820px — the header runs out of room for the brand plus seven nav links
+ *   520px — single-column territory; padding and type need to come down
+ * ==================================================================== */
+
+/* The header restructures at exactly the width where SiteNav switches modes.
+ * These rules previously sat at 820px while the toggle and the mobile panel
+ * appear at 767px, which left a 53px band where the bar was stacked into a
+ * column with no toggle to justify it. */
+@media (max-width: 767px) {
+  .nav-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 0;
+  }
+
+  /* Wrapped nav links need a larger tap target once they are no longer on a
+     single line — 44px minimum per WCAG 2.5.5. */
+  .links {
+    gap: 4px 10px;
+    width: 100%;
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 2px;
+  }
+}
+
+/* Spacing density, unrelated to the nav — this threshold stays where it was. */
+@media (max-width: 820px) {
+  .landing-hero {
+    padding: 24px 0 36px;
+  }
+
+  .landing-pillars {
+    gap: 14px;
+    padding-bottom: 32px;
+  }
+
+  .grid {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 520px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .landing-lead {
+    font-size: 1rem;
+  }
+
+  /* Full-width call to action rather than two buttons squeezed side by side. */
+  .landing-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .landing-cta-row .cta,
+  .landing-cta-row .cta-secondary {
+    text-align: center;
+  }
+
+  .landing-stats {
+    gap: 8px;
+    font-size: 0.78rem;
+  }
+
+  .landing-pillar {
+    padding: 18px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .landing-trust {
+    padding: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  /* The decorative blur orbs are sized off viewport width and dominate the
+     hero on a phone. */
+  .landing-orbs::before,
+  .landing-orbs::after {
+    opacity: 0.26;
+  }
+}
+
+/* The sticky header costs a disproportionate share of a short landscape
+   viewport, so it scrolls away there. */
+@media (max-height: 460px) and (orientation: landscape) {
+  .nav {
+    position: static;
+  }
+}
 /* ── Address / Hash primitives ───────────────────────────────────────────────
  *
  * Used by <Address> and <Hash> in components/address-hash.tsx.
@@ -968,6 +1078,97 @@ a { color: inherit; text-decoration: none; }
   border-color: color-mix(in srgb, var(--accent-2) 45%, transparent);
 }
 
+/* ── Wallet connect (issue #60) ──────────────────────────────────────────────
+ * States: checking / not-installed / disconnected / connecting / connected /
+ * wrong-network / error — see components/wallet/freighter-connect.tsx. */
+.wallet-connect {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.wallet-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  background: color-mix(in srgb, var(--surface) 88%, var(--bg));
+  color: var(--muted);
+  font-size: var(--text-xs);
+  line-height: var(--lh-xs);
+  white-space: nowrap;
+}
+
+button.wallet-pill {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.wallet-pill-action {
+  border-color: var(--ring);
+  color: color-mix(in srgb, var(--accent) 85%, white);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.wallet-pill-action:hover {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.wallet-pill-connected {
+  border-color: color-mix(in srgb, var(--accent-2) 40%, transparent);
+  color: var(--text);
+}
+
+.wallet-pill-connected:hover {
+  border-color: color-mix(in srgb, var(--accent-2) 70%, transparent);
+}
+
+.wallet-address {
+  font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+.wallet-network-badge {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-2) 22%, transparent);
+  color: color-mix(in srgb, var(--accent-2) 90%, white);
+  font-size: var(--text-2xs);
+  line-height: var(--lh-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Wrong-network is the failure mode the issue calls out as expensive during a
+ * demo, so its badge deliberately breaks from the accent palette rather than
+ * blending in as "yet another pill". */
+.wallet-network-badge-wrong {
+  background: color-mix(in srgb, red 26%, transparent);
+  color: color-mix(in srgb, red 85%, white);
+}
+
+.wallet-pill-alert {
+  border-color: color-mix(in srgb, red 30%, transparent);
+  color: color-mix(in srgb, red 80%, white);
+}
+
+.wallet-retry {
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: var(--text-2xs);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+@media (max-width: 640px) {
+  .wallet-address { display: none; }
+}
+
 /* ── Accessibility utility ───────────────────────────────────────────────────
  * Hides content visually while keeping it announced by screen readers.
  * Used for the aria-live copy-confirmation region in Address / Hash. */
@@ -989,4 +1190,86 @@ a { color: inherit; text-decoration: none; }
 .prose {
   max-width: var(--measure);
   line-height: var(--lh-base);
+}
+
+/* ── Footer (issue #67) ──────────────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  margin-top: 40px;
+  padding: 20px 0 32px;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.site-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.site-footer-link {
+  color: color-mix(in srgb, var(--accent) 85%, white);
+}
+
+.site-footer-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Quickstart (issue #67) ──────────────────────────────────────────────── */
+.quickstart {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.quickstart h3 {
+  margin: 0 0 12px;
+}
+
+.quickstart-steps {
+  color: var(--muted);
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.quickstart-steps code {
+  background: color-mix(in srgb, var(--surface) 80%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: var(--text-xs);
+}
+
+/* === Preview badge =====================================================
+ * Marks a non-production deployment. Sits in normal flow above the sticky
+ * header rather than fixed over it, so it cannot cover content or introduce
+ * horizontal overflow at mobile widths.
+ * ==================================================================== */
+.preview-badge {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  padding: 8px 20px;
+  background: color-mix(in srgb, var(--accent-2) 20%, var(--bg));
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-2) 45%, transparent);
+  color: var(--text);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.preview-badge strong {
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-size: 0.72rem;
+  color: color-mix(in srgb, var(--accent-2) 80%, white);
+}
+
+.preview-badge span {
+  color: var(--muted);
 }

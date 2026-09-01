@@ -17,6 +17,11 @@ export default function Page() {
     <section className="section">
       <span className="tag">Operators</span>
       <h1>Operator dashboard</h1>
+      <p style={{ color: "var(--muted)", maxWidth: "62ch" }}>
+        Attestation volume, usage by model, and quota headroom. Every chart on
+        this page ships its numbers as a table — an auditor asking for the
+        underlying figures should not have to ask anyone.
+      <h2>Operator dashboard</h2>
       <p style={{ color: "var(--muted)", maxWidth: "62ch", marginBottom: 24 }}>
         Attestation volume, usage by model, and quota headroom. Data is sourced directly from the testnet settlement layer.
       </p>

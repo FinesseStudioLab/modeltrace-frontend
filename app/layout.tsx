@@ -52,6 +52,17 @@ export const metadata: Metadata = {
   },
 };
 
+const nav = [
+  ["Product", "/product"],
+  ["Contracts", "/contracts"],
+  ["Operators", "/operators"],
+  ["Compliance", "/compliance"],
+  ["Roadmap", "/roadmap"],
+  ["Changelog", "/changelog"],
+  ["Contributors", "/contributors"],
+  ["Docs", "/docs"],
+] as const;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">

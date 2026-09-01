@@ -7,6 +7,13 @@ export const metadata: Metadata = {
 
 function PlannedTag() {
   return (
+    <section className="section">
+      <span className="tag">Product</span>
+      <h1>Product surface — product definition TBD.</h1>
+      <p style={{ color: "var(--muted)" }}>
+        Scaffold page — replace with production content, data loaders, and analytics.
+      </p>
+    </section>
     <span
       className="tag"
       style={{
